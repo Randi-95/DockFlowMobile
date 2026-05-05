@@ -1,4 +1,5 @@
 import 'package:dockflow_app/features/auth/view/login.dart';
+import 'package:dockflow_app/features/inventory/inventory.dart';
 import 'package:dockflow_app/features/mainpage/mainpage.dart';
 import 'package:flutter/material.dart';
 
@@ -17,7 +18,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/loginpage',
       routes: {
         '/loginpage': (context) => LoginPage(),
-        '/mainpage': (context) => MainPage()
+        '/mainpage': (context) => MainPage(),
+        '/inventorypage': (context) => InventoryPage()
         },
     );
   }

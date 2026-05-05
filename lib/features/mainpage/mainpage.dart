@@ -1,8 +1,23 @@
+import 'package:dockflow_app/features/history/history.dart';
 import 'package:dockflow_app/features/home/view/home.dart';
+import 'package:dockflow_app/features/inventory/inventory.dart';
 import 'package:flutter/material.dart';
 
-class MainPage extends StatelessWidget {
+class MainPage extends StatefulWidget {
   const MainPage({super.key});
+
+  @override
+  State<MainPage> createState() => _MainPageState();
+}
+
+class _MainPageState extends State<MainPage> {
+  int _currentIndex = 0;
+
+  final List<Widget> screen = [
+    const HomePage(),
+    const InventoryPage(),
+    const OrderHistoryPage(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +39,15 @@ class MainPage extends StatelessWidget {
             backgroundColor: Colors.white,
             selectedItemColor: const Color(0xFF1565C0),
             unselectedItemColor: Colors.blueGrey[400],
-            currentIndex: 0, // Indeks yang aktif
+            currentIndex: _currentIndex,
             selectedFontSize: 12,
             unselectedFontSize: 12,
             showUnselectedLabels: true,
+            onTap: (index) {
+              setState(() {
+                _currentIndex = index;
+              });
+            },
             items: [
               const BottomNavigationBarItem(
                 icon: Padding(
@@ -66,7 +86,7 @@ class MainPage extends StatelessWidget {
         ),
       ),
 
-      body: HomePage(),
+      body: screen[_currentIndex],
     );
   }
 }
