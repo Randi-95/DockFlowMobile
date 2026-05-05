@@ -59,6 +59,7 @@ flutter:
   assets:
     - assets/images/
     - assets/images/fototask.png
+    - assets/images/logomentahan.png
 
   # To add assets to your application, add an assets section, like this:
 

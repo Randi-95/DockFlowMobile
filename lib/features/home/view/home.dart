@@ -69,32 +69,39 @@ class HomePage extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Icon(
-                                  Icons.info,
-                                  color: Color(0XFF0157BE),
-                                  size: 22,
-                                ),
-                                Column(
+                                Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      "Pemesanan hanya melalui kru",
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        color: Color(0XFF002366),
-                                        fontWeight: FontWeight.w500,
-                                      ),
+                                    Icon(
+                                      Icons.info,
+                                      color: Color(0XFF0157BE),
+                                      size: 22,
                                     ),
-                                    SizedBox(
-                                      width: 170,
-                                      child: Text(
-                                        "Untuk menjaga akurasi operasional dan kebutuhan konsultasi teknis, pemesanan barang tidak dapat dilakukan oleh pihak kapal (klien).",
-                                        style: TextStyle(
-                                          fontSize: 8,
-                                          color: Colors.grey[800],
-                                          fontWeight: FontWeight.w400,
+                                    SizedBox(width: 10),
+                                    Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          "Pemesanan hanya melalui kru",
+                                          style: TextStyle(
+                                            fontSize: 12,
+                                            color: Color(0XFF002366),
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
-                                      ),
+                                        SizedBox(
+                                          width: 170,
+                                          child: Text(
+                                            "Untuk menjaga akurasi operasional dan kebutuhan konsultasi teknis, pemesanan barang tidak dapat dilakukan oleh pihak kapal (klien).",
+                                            style: TextStyle(
+                                              fontSize: 8,
+                                              color: Colors.grey[800],
+                                              fontWeight: FontWeight.w400,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
                                     ),
                                   ],
                                 ),
@@ -159,7 +166,12 @@ class HomePage extends StatelessWidget {
                                       "Stok Tersedia",
                                       style: TextStyle(
                                         fontSize: 12,
-                                        color: Color.fromARGB(255, 39, 111, 255),
+                                        color: Color.fromARGB(
+                                          255,
+                                          39,
+                                          111,
+                                          255,
+                                        ),
                                         fontWeight: FontWeight.w500,
                                       ),
                                     ),
@@ -390,6 +402,269 @@ class HomePage extends StatelessWidget {
                               ),
                             ],
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+
+            Container(
+              margin: EdgeInsets.fromLTRB(10, 2, 10, 10),
+              child: Card(
+                color: Color(0XFFF9FBFE),
+                elevation: 0.3,
+                shadowColor: const Color.fromARGB(255, 220, 218, 218),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadiusGeometry.circular(10),
+                ),
+                child: Container(
+                  margin: EdgeInsets.fromLTRB(3, 12, 3, 12),
+                  child: Column(
+                    children: [
+                      Container(
+                        margin: EdgeInsets.fromLTRB(10, 5, 10, 0),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.date_range_outlined,
+                                  size: 14,
+                                  color: Color(0XFF013367),
+                                ),
+
+                                SizedBox(width: 8),
+
+                                Text(
+                                  "Performa Kehadiran - 1 Bulan Terakhir",
+                                  style: TextStyle(
+                                    fontSize: 11,
+                                    color: Color(0XFF013367),
+                                    fontWeight: FontWeight.w500,
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  "Lihat Detail",
+                                  style: TextStyle(
+                                    fontSize: 10,
+                                    color: Color(0XFF013367),
+                                  ),
+                                ),
+
+                                Icon(
+                                  Icons.arrow_forward,
+                                  size: 12,
+                                  color: Color(0XFF013367),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      GridView.count(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 0,
+                        mainAxisSpacing: 0,
+                        childAspectRatio: 0.8,
+                        children: [
+                          Card(
+                            color: Color(0XFFF3FBF7),
+                            elevation: 0.1,
+                            child: Container(
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.check_circle, color: Colors.green),
+                                  Text(
+                                    "22",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0XFF013367),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Hadir",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          Card(
+                            color: Color(0XFFFDF9F1),
+                            elevation: 0.1,
+                            child: Container(
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.access_time_filled,
+                                    color: Colors.yellow[800],
+                                  ),
+                                  Text(
+                                    "22",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0XFF013367),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Hadir",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          Card(
+                            color: Color(0XFFFEF4F2),
+                            elevation: 0.1,
+                            child: Container(
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(Icons.cancel, color: Colors.red),
+                                  Text(
+                                    "22",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0XFF013367),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Hadir",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+
+                          Card(
+                            color: Color(0XFFF3F8FE),
+                            elevation: 0.1,
+                            child: Container(
+                              margin: EdgeInsets.all(10),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Icon(
+                                    Icons.groups_rounded,
+                                    color: Colors.blue[800],
+                                  ),
+                                  Text(
+                                    "22",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w600,
+                                      color: Color(0XFF013367),
+                                    ),
+                                  ),
+                                  Text(
+                                    "Hadir",
+                                    style: TextStyle(
+                                      fontSize: 12,
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      Container(
+                        margin: EdgeInsets.all(10),
+                        child: Row(
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "Tingkat Kehadiran",
+                                  style: TextStyle(
+                                    fontSize: 12,
+                                    fontWeight: FontWeight.w400,
+                                    color: Colors.grey[600],
+                                  ),
+                                ),
+
+                                Text(
+                                  "92%",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w800,
+                                    color: Color(0XFF003998),
+                                  ),
+                                ),
+                              ],
+                            ),
+
+                            SizedBox(width: 20),
+
+                            Expanded(
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  SizedBox(height: 10),
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(10),
+                                    child: LinearProgressIndicator(
+                                      value: 0.92, // Nilai 92%
+                                      backgroundColor: Colors.grey[200],
+                                      valueColor: AlwaysStoppedAnimation<Color>(
+                                        Colors.blue[700]!,
+                                      ),
+                                      minHeight: 10,
+                                    ),
+                                  ),
+
+                                  SizedBox(height: 4),
+                                  Text(
+                                    "24 dari 26 hari",
+                                    style: TextStyle(
+                                      fontSize: 10,
+                                      color: Colors.grey[600],
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
