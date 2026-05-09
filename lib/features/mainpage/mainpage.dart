@@ -1,6 +1,7 @@
 import 'package:dockflow_app/features/history/history.dart';
 import 'package:dockflow_app/features/home/view/home.dart';
 import 'package:dockflow_app/features/inventory/inventory.dart';
+import 'package:dockflow_app/features/profile/profile.dart';
 import 'package:flutter/material.dart';
 
 class MainPage extends StatefulWidget {
@@ -17,6 +18,8 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const InventoryPage(),
     const OrderHistoryPage(),
+    const Center(child: Text("inventory")),
+    const ProfilePage()
   ];
 
   @override

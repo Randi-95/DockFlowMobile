@@ -26,7 +26,10 @@ class OrderHistoryPage extends StatelessWidget {
                       ),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 6,
+                      ),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.1),
                         borderRadius: BorderRadius.circular(8),
@@ -36,7 +39,10 @@ class OrderHistoryPage extends StatelessWidget {
                         children: [
                           Icon(Icons.tune, color: Colors.white, size: 16),
                           SizedBox(width: 8),
-                          Text("Filter", style: TextStyle(color: Colors.white, fontSize: 12)),
+                          Text(
+                            "Filter",
+                            style: TextStyle(color: Colors.white, fontSize: 12),
+                          ),
                         ],
                       ),
                     ),
@@ -159,7 +165,11 @@ class OrderHistoryPage extends StatelessWidget {
             ),
             child: const Row(
               children: [
-                Icon(Icons.calendar_today_outlined, size: 16, color: Colors.grey),
+                Icon(
+                  Icons.calendar_today_outlined,
+                  size: 16,
+                  color: Colors.grey,
+                ),
                 SizedBox(width: 5),
                 Text("Pilih Tanggal", style: TextStyle(fontSize: 11)),
                 Icon(Icons.keyboard_arrow_down, size: 16, color: Colors.grey),
@@ -197,8 +207,14 @@ class OrderHistoryPage extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         Text(label, style: const TextStyle(fontSize: 8, color: Colors.grey)),
-        Text(count, style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-        const Text("Pesanan", style: TextStyle(fontSize: 8, color: Colors.grey)),
+        Text(
+          count,
+          style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
+        ),
+        const Text(
+          "Pesanan",
+          style: TextStyle(fontSize: 8, color: Colors.grey),
+        ),
       ],
     );
   }
@@ -209,22 +225,69 @@ class OrderHistoryPage extends StatelessWidget {
       physics: const NeverScrollableScrollPhysics(),
       padding: const EdgeInsets.all(15),
       children: [
-        _orderCard("DFMS-2505-00124", "MV Ocean Star", "22 Mei 2025 • 10:30", "Menunggu", "23 Mei 2025", "5", "4.850.000", Colors.orange),
-        _orderCard("DFMS-2505-00118", "MT Pacific Glory", "20 Mei 2025 • 14:15", "Dikonfirmasi", "21 Mei 2025", "7", "7.230.000", Colors.green),
-        _orderCard("DFMS-2505-00110", "MV Samudera Raya", "18 Mei 2025 • 09:45", "Diproses", "19 Mei 2025", "9", "6.120.000", Colors.orangeAccent),
-        _orderCard("DFMS-2505-00095", "MV Sejati Abadi", "15 Mei 2025 • 16:20", "Selesai", "16 Mei 2025", "6", "3.760.000", Colors.purple),
+        _orderCard(
+          "DFMS-2505-00124",
+          "MV Ocean Star",
+          "22 Mei 2025 • 10:30",
+          "Menunggu",
+          "23 Mei 2025",
+          "5",
+          "4.850.000",
+          Colors.orange,
+        ),
+        _orderCard(
+          "DFMS-2505-00118",
+          "MT Pacific Glory",
+          "20 Mei 2025 • 14:15",
+          "Dikonfirmasi",
+          "21 Mei 2025",
+          "7",
+          "7.230.000",
+          Colors.green,
+        ),
+        _orderCard(
+          "DFMS-2505-00110",
+          "MV Samudera Raya",
+          "18 Mei 2025 • 09:45",
+          "Diproses",
+          "19 Mei 2025",
+          "9",
+          "6.120.000",
+          Colors.orangeAccent,
+        ),
+        _orderCard(
+          "DFMS-2505-00095",
+          "MV Sejati Abadi",
+          "15 Mei 2025 • 16:20",
+          "Selesai",
+          "16 Mei 2025",
+          "6",
+          "3.760.000",
+          Colors.purple,
+        ),
       ],
     );
   }
 
-  Widget _orderCard(String id, String boat, String date, String status, String est, String items, String price, Color statusColor) {
+  Widget _orderCard(
+    String id,
+    String boat,
+    String date,
+    String status,
+    String est,
+    String items,
+    String price,
+    Color statusColor,
+  ) {
     return Container(
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10)],
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.03), blurRadius: 10),
+        ],
         border: Border.all(color: Colors.grey.shade100),
       ),
       child: Row(
@@ -233,25 +296,48 @@ class OrderHistoryPage extends StatelessWidget {
           // Icon Status
           Container(
             padding: const EdgeInsets.all(8),
-            decoration: BoxDecoration(color: statusColor.withOpacity(0.1), borderRadius: BorderRadius.circular(10)),
+            decoration: BoxDecoration(
+              color: statusColor.withOpacity(0.1),
+              borderRadius: BorderRadius.circular(10),
+            ),
             child: Icon(Icons.access_time, color: statusColor, size: 20),
           ),
           const SizedBox(width: 10),
-          
-          // Kolom Utama (ID, Kapal, Tgl) - Dibungkus Expanded supaya fleksibel
+
           Expanded(
             flex: 3,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(id, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: Color(0XFF003366))),
-                Text(boat, style: const TextStyle(fontSize: 10, color: Colors.grey), overflow: TextOverflow.ellipsis),
+                Text(
+                  id,
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 11,
+                    color: Color(0XFF003366),
+                  ),
+                ),
+                Text(
+                  boat,
+                  style: const TextStyle(fontSize: 10, color: Colors.grey),
+                  overflow: TextOverflow.ellipsis,
+                ),
                 const SizedBox(height: 4),
                 Row(
                   children: [
-                    const Icon(Icons.calendar_today, size: 8, color: Colors.grey),
+                    const Icon(
+                      Icons.calendar_today,
+                      size: 8,
+                      color: Colors.grey,
+                    ),
                     const SizedBox(width: 4),
-                    Expanded(child: Text(date, style: const TextStyle(fontSize: 8, color: Colors.grey), overflow: TextOverflow.ellipsis)),
+                    Expanded(
+                      child: Text(
+                        date,
+                        style: const TextStyle(fontSize: 8, color: Colors.grey),
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
                   ],
                 ),
               ],
@@ -265,13 +351,36 @@ class OrderHistoryPage extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
-                  decoration: BoxDecoration(color: statusColor.withOpacity(0.1), borderRadius: BorderRadius.circular(8)),
-                  child: Text(status, style: TextStyle(color: statusColor, fontSize: 7, fontWeight: FontWeight.bold)),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 6,
+                    vertical: 2,
+                  ),
+                  decoration: BoxDecoration(
+                    color: statusColor.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Text(
+                    status,
+                    style: TextStyle(
+                      color: statusColor,
+                      fontSize: 7,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
                 const SizedBox(height: 4),
-                const Text("Estimasi", style: TextStyle(fontSize: 7, color: Colors.grey)),
-                Text(est, style: const TextStyle(fontSize: 8, fontWeight: FontWeight.bold, color: Color(0XFF0052CC))),
+                const Text(
+                  "Estimasi",
+                  style: TextStyle(fontSize: 7, color: Colors.grey),
+                ),
+                Text(
+                  est,
+                  style: const TextStyle(
+                    fontSize: 8,
+                    fontWeight: FontWeight.bold,
+                    color: Color(0XFF0052CC),
+                  ),
+                ),
               ],
             ),
           ),
@@ -284,19 +393,32 @@ class OrderHistoryPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                const Text("Total", style: TextStyle(fontSize: 7, color: Colors.grey)),
-                Text("Rp $price", style: const TextStyle(fontSize: 9, fontWeight: FontWeight.bold), textAlign: TextAlign.right),
-                const Text("5 Item", style: TextStyle(fontSize: 7, color: Colors.grey)),
+                const Text(
+                  "Total",
+                  style: TextStyle(fontSize: 7, color: Colors.grey),
+                ),
+                Text(
+                  "Rp $price",
+                  style: const TextStyle(
+                    fontSize: 9,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.right,
+                ),
+                const Text(
+                  "5 Item",
+                  style: TextStyle(fontSize: 7, color: Colors.grey),
+                ),
               ],
             ),
           ),
-          
+
           const Icon(Icons.chevron_right, color: Colors.grey, size: 16),
         ],
       ),
     );
   }
-  
+
   Widget _buildRepeatOrderBanner() {
     return Container(
       margin: const EdgeInsets.all(15),
@@ -307,14 +429,24 @@ class OrderHistoryPage extends StatelessWidget {
       ),
       child: Row(
         children: [
-          const Icon(Icons.assignment_turned_in_outlined, color: Colors.blue, size: 40),
+          const Icon(
+            Icons.assignment_turned_in_outlined,
+            color: Colors.blue,
+            size: 40,
+          ),
           const SizedBox(width: 10),
           const Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text("Butuh Pesanan yang Sama?", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11)),
-                Text("Gunakan fitur repeat order untuk memesan kembali barang yang pernah dipesan.", style: TextStyle(fontSize: 9, color: Colors.grey)),
+                Text(
+                  "Butuh Pesanan yang Sama?",
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 11),
+                ),
+                Text(
+                  "Gunakan fitur repeat order untuk memesan kembali barang yang pernah dipesan.",
+                  style: TextStyle(fontSize: 9, color: Colors.grey),
+                ),
               ],
             ),
           ),
@@ -322,7 +454,9 @@ class OrderHistoryPage extends StatelessWidget {
             onPressed: () {},
             style: OutlinedButton.styleFrom(
               side: const BorderSide(color: Color(0XFF0052CC)),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8),
+              ),
             ),
             child: const Row(
               children: [
@@ -334,24 +468,6 @@ class OrderHistoryPage extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _buildBottomNav() {
-    return BottomNavigationBar(
-      type: BottomNavigationBarType.fixed,
-      currentIndex: 2,
-      selectedItemColor: const Color(0XFF003366),
-      unselectedItemColor: Colors.grey,
-      selectedFontSize: 10,
-      unselectedFontSize: 10,
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Beranda"),
-        BottomNavigationBarItem(icon: Icon(Icons.inventory_2_outlined), label: "Inventory"),
-        BottomNavigationBarItem(icon: Icon(Icons.assignment), label: "Riwayat Pemesanan"),
-        BottomNavigationBarItem(icon: Icon(Icons.notifications_none), label: "Notifikasi"),
-        BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: "Profile"),
-      ],
     );
   }
 }

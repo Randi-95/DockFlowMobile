@@ -1,7 +1,19 @@
+import 'package:art_sweetalert/art_sweetalert.dart';
+import 'package:dockflow_app/features/auth/auth_bloc/auth_bloc.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +108,7 @@ class LoginPage extends StatelessWidget {
                             ),
                             SizedBox(height: 22),
                             Text(
-                              "ID Karyawan",
+                              "Email",
                               style: TextStyle(
                                 fontSize: 12,
                                 color: Color(0xFF002366),
@@ -105,10 +117,11 @@ class LoginPage extends StatelessWidget {
                             ),
                             SizedBox(height: 12),
                             TextField(
+                              controller: emailController,
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.person_outlined),
                                 hint: Text(
-                                  "Masukkan ID Karyawan",
+                                  "Masukkan Email",
                                   style: TextStyle(
                                     fontSize: 12,
                                     color: Colors.grey[800],
@@ -145,9 +158,22 @@ class LoginPage extends StatelessWidget {
                             ),
                             SizedBox(height: 12),
                             TextField(
+                              obscureText: _obscureText,
+                              controller: passwordController,
                               decoration: InputDecoration(
                                 prefixIcon: Icon(Icons.lock_outline),
-                                suffixIcon: Icon(Icons.visibility),
+                                suffixIcon: IconButton(
+                                  onPressed: () {
+                                    setState(() {
+                                      _obscureText = !_obscureText;
+                                    });
+                                  },
+                                  icon: Icon(
+                                    _obscureText
+                                        ? Icons.visibility
+                                        : Icons.visibility_off,
+                                  ),
+                                ),
                                 hint: Text(
                                   "Masukkan Password",
                                   style: TextStyle(
@@ -180,22 +206,70 @@ class LoginPage extends StatelessWidget {
 
                             SizedBox(
                               width: double.infinity,
-                              child: ElevatedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pushNamed('/mainpage');
+                              child: BlocConsumer<AuthBloc, AuthState>(
+                                listener: (context, state) {
+                                  if (state is AuthSucces) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: Text(state.succesMessage),
+                                      ),
+                                    );
+
+                                    Navigator.of(
+                                      context,
+                                    ).pushReplacementNamed('/mainpage');
+                                  } else if (state is AuthError) {
+                                    ArtSweetAlert.show(
+                                      context: context,
+                                      artDialogArgs: ArtDialogArgs(
+                                        type: ArtSweetAlertType.danger,
+                                        title: "Login Failed",
+                                        text: state.errorMessage,
+                                      ),
+                                    );
+                                  }
                                 },
-                                child: Text(
-                                  "Login",
-                                  style: TextStyle(color: Colors.white),
-                                ),
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: Color(0xFF003998),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadiusGeometry.circular(
-                                      10,
+                                builder: (context, state) {
+                                  if (state is AuthLoading) {
+                                    return ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: Colors.grey,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadiusGeometry.circular(10),
+                                        ),
+                                      ),
+                                      onPressed: () {},
+                                      child: Container(
+                                        child: CircularProgressIndicator(),
+                                      ),
+                                    );
+                                  }
+
+                                  return ElevatedButton(
+                                    onPressed: () {
+                                      final email = emailController.text.trim();
+                                      final password = passwordController.text.trim();
+                                      context.read<AuthBloc>().add(
+                                        LoginEvent(
+                                          email: email,
+                                          password: password,
+                                        ),
+                                      );
+                                    },
+                                    child: Text(
+                                      "Login",
+                                      style: TextStyle(color: Colors.white),
                                     ),
-                                  ),
-                                ),
+                                    style: ElevatedButton.styleFrom(
+                                      backgroundColor: Color(0xFF003998),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadiusGeometry.circular(10),
+                                      ),
+                                    ),
+                                  );
+                                },
                               ),
                             ),
                           ],
