@@ -42,7 +42,11 @@ class _InventoryPageState extends State<InventoryPage> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(Icons.error_outline, color: Colors.white, size: 48),
+                  const Icon(
+                    Icons.error_outline,
+                    color: Colors.white,
+                    size: 48,
+                  ),
                   const SizedBox(height: 16),
                   Text(
                     state.message,
@@ -62,12 +66,7 @@ class _InventoryPageState extends State<InventoryPage> {
 
           if (state is InventoryLoaded) {
             return SingleChildScrollView(
-              child: Column(
-                children: [
-                  _buildHeader(),
-                  _buildContent(state),
-                ],
-              ),
+              child: Column(children: [_buildHeader(), _buildContent(state)]),
             );
           }
 
@@ -95,7 +94,10 @@ class _InventoryPageState extends State<InventoryPage> {
                 ),
               ),
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 12,
+                  vertical: 8,
+                ),
                 decoration: BoxDecoration(
                   color: Colors.white.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10),
@@ -164,8 +166,8 @@ class _InventoryPageState extends State<InventoryPage> {
                 Future.delayed(const Duration(milliseconds: 500), () {
                   if (_searchController.text == value) {
                     context.read<InventoryBloc>().add(
-                          SearchProductEvent(search: value),
-                        );
+                      SearchProductEvent(search: value),
+                    );
                   }
                 });
               },
@@ -178,7 +180,9 @@ class _InventoryPageState extends State<InventoryPage> {
                         icon: const Icon(Icons.clear, color: Colors.grey),
                         onPressed: () {
                           _searchController.clear();
-                          context.read<InventoryBloc>().add(GetInventoryEvent());
+                          context.read<InventoryBloc>().add(
+                            GetInventoryEvent(),
+                          );
                         },
                       )
                     : null,
@@ -256,7 +260,12 @@ class _InventoryPageState extends State<InventoryPage> {
     );
   }
 
-  Widget _buildStatCard(String title, String value, Color color, IconData icon) {
+  Widget _buildStatCard(
+    String title,
+    String value,
+    Color color,
+    IconData icon,
+  ) {
     return Container(
       width: 110,
       margin: const EdgeInsets.only(right: 12),
@@ -264,14 +273,19 @@ class _InventoryPageState extends State<InventoryPage> {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(15),
-        boxShadow: [BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 5)],
+        boxShadow: [
+          BoxShadow(color: Colors.black.withOpacity(0.02), blurRadius: 5),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Icon(icon, color: color, size: 20),
           const SizedBox(height: 10),
-          Text(value, style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          Text(
+            value,
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+          ),
           Text(title, style: const TextStyle(fontSize: 9, color: Colors.grey)),
         ],
       ),
@@ -284,11 +298,18 @@ class _InventoryPageState extends State<InventoryPage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(title, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14)),
+          Text(
+            title,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+          ),
           if (showAction)
             const Text(
               "Lihat Semua >",
-              style: TextStyle(color: Colors.blue, fontSize: 11, fontWeight: FontWeight.w500),
+              style: TextStyle(
+                color: Colors.blue,
+                fontSize: 11,
+                fontWeight: FontWeight.w500,
+              ),
             ),
         ],
       ),
@@ -304,18 +325,20 @@ class _InventoryPageState extends State<InventoryPage> {
         children: [
           _buildCategoryItem(
             "Semua",
-            "${categories.fold(0, (sum, cat) => sum + cat.total)}",
+            "${categories.fold(0, (sum, cat) => sum + (cat.total as int))}",
             Icons.apps,
             _selectedCategoryId == null,
             null,
           ),
-          ...categories.map((category) => _buildCategoryItem(
-                category.name,
-                "${category.total}",
-                _getCategoryIcon(category.iconName),
-                _selectedCategoryId == category.id,
-                category.id,
-              )),
+          ...categories.map(
+            (category) => _buildCategoryItem(
+              category.name,
+              "${category.total}",
+              _getCategoryIcon(category.iconName),
+              _selectedCategoryId == category.id,
+              category.id,
+            ),
+          ),
         ],
       ),
     );
@@ -349,8 +372,8 @@ class _InventoryPageState extends State<InventoryPage> {
           _selectedCategoryId = categoryId;
         });
         context.read<InventoryBloc>().add(
-              FilterByCategoryEvent(categoryId: categoryId),
-            );
+          FilterByCategoryEvent(categoryId: categoryId),
+        );
       },
       child: Container(
         margin: const EdgeInsets.only(left: 20),
@@ -368,8 +391,14 @@ class _InventoryPageState extends State<InventoryPage> {
               child: Icon(icon, color: isSelected ? Colors.blue : Colors.grey),
             ),
             const SizedBox(height: 8),
-            Text(title, style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500)),
-            Text(count, style: const TextStyle(fontSize: 9, color: Colors.grey)),
+            Text(
+              title,
+              style: const TextStyle(fontSize: 10, fontWeight: FontWeight.w500),
+            ),
+            Text(
+              count,
+              style: const TextStyle(fontSize: 9, color: Colors.grey),
+            ),
           ],
         ),
       ),
@@ -406,7 +435,9 @@ class _InventoryPageState extends State<InventoryPage> {
   }
 
   Widget _buildProductItem(product) {
-    Color statusColor = product.statusColor == 'orange' ? Colors.orange : Colors.green;
+    Color statusColor = product.statusColor == 'orange'
+        ? Colors.orange
+        : Colors.green;
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -429,10 +460,13 @@ class _InventoryPageState extends State<InventoryPage> {
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
-                      product.imageUrl,
+                      'http://127.0.0.1:8000/storage/${product.imageUrl}',
                       fit: BoxFit.cover,
                       errorBuilder: (context, error, stackTrace) {
-                        return const Icon(Icons.image_outlined, color: Colors.grey);
+                        return const Icon(
+                          Icons.image_outlined,
+                          color: Colors.grey,
+                        );
                       },
                     ),
                   )
@@ -445,7 +479,10 @@ class _InventoryPageState extends State<InventoryPage> {
               children: [
                 Text(
                   product.name,
-                  style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                    fontSize: 12,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
                 Text(
                   "${product.skuCode} • ${product.categoryName}",
@@ -453,7 +490,10 @@ class _InventoryPageState extends State<InventoryPage> {
                 ),
                 const SizedBox(height: 4),
                 Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 2,
+                  ),
                   decoration: BoxDecoration(
                     color: statusColor.withOpacity(0.1),
                     borderRadius: BorderRadius.circular(4),
@@ -479,7 +519,10 @@ class _InventoryPageState extends State<InventoryPage> {
               ),
               Text(
                 "${product.stockQty}",
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                style: const TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
                 product.unit,
