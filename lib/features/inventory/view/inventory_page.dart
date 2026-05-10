@@ -326,6 +326,7 @@ class _InventoryPageState extends State<InventoryPage> {
           _buildCategoryItem(
             "Semua",
             "${categories.fold(0, (sum, cat) => sum + (cat.total as int))}",
+            null,
             Icons.apps,
             _selectedCategoryId == null,
             null,
@@ -334,6 +335,7 @@ class _InventoryPageState extends State<InventoryPage> {
             (category) => _buildCategoryItem(
               category.name,
               "${category.total}",
+              category.iconName,
               _getCategoryIcon(category.iconName),
               _selectedCategoryId == category.id,
               category.id,
@@ -362,7 +364,8 @@ class _InventoryPageState extends State<InventoryPage> {
   Widget _buildCategoryItem(
     String title,
     String count,
-    IconData icon,
+    String? imageUrl,
+    IconData fallbackIcon,
     bool isSelected,
     int? categoryId,
   ) {
@@ -380,7 +383,9 @@ class _InventoryPageState extends State<InventoryPage> {
         child: Column(
           children: [
             Container(
-              padding: const EdgeInsets.all(15),
+              width: 50,
+              height: 50,
+              padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isSelected ? const Color(0XFFE8F2FF) : Colors.white,
                 borderRadius: BorderRadius.circular(15),
@@ -388,7 +393,27 @@ class _InventoryPageState extends State<InventoryPage> {
                   color: isSelected ? Colors.blue : Colors.grey.shade100,
                 ),
               ),
-              child: Icon(icon, color: isSelected ? Colors.blue : Colors.grey),
+              child: imageUrl != null && imageUrl.isNotEmpty
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: Image.network(
+                        'http://127.0.0.1:8000/storage/$imageUrl',
+                        fit: BoxFit.contain,
+                        color: isSelected ? Colors.blue : Colors.grey,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Icon(
+                            fallbackIcon,
+                            color: isSelected ? Colors.blue : Colors.grey,
+                            size: 24,
+                          );
+                        },
+                      ),
+                    )
+                  : Icon(
+                      fallbackIcon,
+                      color: isSelected ? Colors.blue : Colors.grey,
+                      size: 24,
+                    ),
             ),
             const SizedBox(height: 8),
             Text(
@@ -456,7 +481,7 @@ class _InventoryPageState extends State<InventoryPage> {
               color: Colors.grey[100],
               borderRadius: BorderRadius.circular(8),
             ),
-            child: product.imageUrl != null
+            child: product.imageUrl != null && product.imageUrl.isNotEmpty
                 ? ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: Image.network(
