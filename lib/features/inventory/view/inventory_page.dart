@@ -32,32 +32,76 @@ class _InventoryPageState extends State<InventoryPage> {
       body: BlocBuilder<InventoryBloc, InventoryState>(
         builder: (context, state) {
           if (state is InventoryLoading) {
-            return const Center(
-              child: CircularProgressIndicator(color: Colors.white),
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  _buildHeader(),
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height - 200,
+                    decoration: const BoxDecoration(
+                      color: Color(0XFFF9FBFE),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: const Center(
+                      child: CircularProgressIndicator(
+                        color: Color(0XFF003366),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
             );
           }
 
           if (state is InventoryError) {
-            return Center(
+            return SingleChildScrollView(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const Icon(
-                    Icons.error_outline,
-                    color: Colors.white,
-                    size: 48,
-                  ),
-                  const SizedBox(height: 16),
-                  Text(
-                    state.message,
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                  const SizedBox(height: 16),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<InventoryBloc>().add(GetInventoryEvent());
-                    },
-                    child: const Text('Coba Lagi'),
+                  _buildHeader(),
+                  Container(
+                    width: double.infinity,
+                    height: MediaQuery.of(context).size.height - 200,
+                    decoration: const BoxDecoration(
+                      color: Color(0XFFF9FBFE),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30),
+                        topRight: Radius.circular(30),
+                      ),
+                    ),
+                    child: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.error_outline,
+                            color: Color(0XFF003366),
+                            size: 48,
+                          ),
+                          const SizedBox(height: 16),
+                          Text(
+                            state.message,
+                            style: const TextStyle(color: Color(0XFF003366)),
+                          ),
+                          const SizedBox(height: 16),
+                          ElevatedButton(
+                            onPressed: () {
+                              context.read<InventoryBloc>().add(GetInventoryEvent());
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0XFF003366),
+                            ),
+                            child: const Text(
+                              'Coba Lagi',
+                              style: TextStyle(color: Colors.white),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
