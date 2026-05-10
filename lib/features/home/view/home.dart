@@ -21,6 +21,7 @@ class HomePage extends StatelessWidget {
           final user = state.user;
           final stock = state.stok;
           final attendance = state.attendance;
+          final bookingActive = state.bookingActive;
           final percent = (attendance.percentage * 100).toStringAsFixed(0);
           return Scaffold(
             body: SingleChildScrollView(
@@ -271,8 +272,8 @@ class HomePage extends StatelessWidget {
                                       Column(
                                         crossAxisAlignment:
                                             CrossAxisAlignment.start,
-                                        children: const [
-                                          Text(
+                                        children: [
+                                          const Text(
                                             'Pesanan Aktif',
                                             style: TextStyle(
                                               fontSize: 12,
@@ -281,6 +282,19 @@ class HomePage extends StatelessWidget {
                                             ),
                                           ),
                                           Text(
+                                            '${bookingActive}',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              color: Color.fromARGB(
+                                                255,
+                                                1,
+                                                133,
+                                                80,
+                                              ),
+                                              fontWeight: FontWeight.w800,
+                                            ),
+                                          ),
+                                          const Text(
                                             'Pesanan',
                                             style: TextStyle(
                                               fontSize: 10,

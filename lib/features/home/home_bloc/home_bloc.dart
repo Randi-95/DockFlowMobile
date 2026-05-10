@@ -31,6 +31,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
             ),
             stok: Stock.fromJson(ressStock.data),
             attendance: Attendance.fromJson(ressAttendance.data),
+            bookingActive: ressProfile.data['bookingActive']
           ),
         );
       } on DioException catch (e) {
