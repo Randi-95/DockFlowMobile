@@ -1,6 +1,7 @@
 import 'package:dockflow_app/core/storage/authstorage.dart';
 import 'package:dockflow_app/features/auth/auth_bloc/auth_bloc.dart';
 import 'package:dockflow_app/features/auth/view/login.dart';
+import 'package:dockflow_app/features/history/history_bloc/history_bloc.dart';
 import 'package:dockflow_app/features/inventory/inventory.dart';
 import 'package:dockflow_app/features/inventory/inventory_bloc/inventory_bloc.dart';
 import 'package:dockflow_app/features/mainpage/mainpage.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => AuthBloc()),
         BlocProvider(create: (context) => InventoryBloc()),
+        BlocProvider(create: (context) => HistoryBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
