@@ -1,0 +1,76 @@
+import 'package:dio/dio.dart';
+import 'package:dockflow_app/core/network/api_client.dart';
+import 'package:dockflow_app/features/inventory/inventory_models/category_model.dart';
+import 'package:dockflow_app/features/inventory/inventory_models/inventory_statistics.dart';
+import 'package:dockflow_app/features/inventory/inventory_models/product_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+part 'inventory_event.dart';
+part 'inventory_state.dart';
+
+class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
+  final apiClient = ApiClient();
+
+  InventoryBloc() : super(InventoryInitial()) {
+    on<GetInventoryEvent>((event, emit) async {
+      emit(InventoryLoading());
+
+      try {
+        Map<String, dynamic> queryParams = {};
+        
+        if (event.search != null && event.search!.isNotEmpty) {
+          queryParams['search'] = event.search;
+        }
+        
+        if (event.categoryId != null) {
+          queryParams['category_id'] = event.categoryId;
+        }
+
+        final response = await apiClient.dio.get(
+          '/inventory-data',
+          queryParameters: queryParams,
+        );
+
+        if (response.data['status'] == true) {
+          final data = response.data['data'];
+
+          final statistics = InventoryStatistics.fromJson(data['statistics']);
+          
+          final categories = (data['categories'] as List)
+              .map((cat) => CategoryModel.fromJson(cat))
+              .toList();
+          
+          final products = (data['products'] as List)
+              .map((prod) => ProductModel.fromJson(prod))
+              .toList();
+
+          emit(InventoryLoaded(
+            statistics: statistics,
+            categories: categories,
+            products: products,
+            selectedCategoryId: event.categoryId,
+            searchQuery: event.search,
+          ));
+        } else {
+          emit(InventoryError(message: "Gagal memuat data inventory"));
+        }
+      } on DioException catch (e) {
+        String errorMsg = "Terjadi kesalahan koneksi";
+
+        if (e.response != null) {
+          errorMsg = e.response?.data['message'] ?? "Gagal memuat data";
+        }
+
+        emit(InventoryError(message: errorMsg));
+      }
+    });
+
+    on<FilterByCategoryEvent>((event, emit) {
+      add(GetInventoryEvent(categoryId: event.categoryId));
+    });
+
+    on<SearchProductEvent>((event, emit) {
+      add(GetInventoryEvent(search: event.search));
+    });
+  }
+}

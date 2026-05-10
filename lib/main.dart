@@ -2,6 +2,7 @@ import 'package:dockflow_app/core/storage/authstorage.dart';
 import 'package:dockflow_app/features/auth/auth_bloc/auth_bloc.dart';
 import 'package:dockflow_app/features/auth/view/login.dart';
 import 'package:dockflow_app/features/inventory/inventory.dart';
+import 'package:dockflow_app/features/inventory/inventory_bloc/inventory_bloc.dart';
 import 'package:dockflow_app/features/mainpage/mainpage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -24,7 +25,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => AuthBloc())],
+      providers: [
+        BlocProvider(create: (context) => AuthBloc()),
+        BlocProvider(create: (context) => InventoryBloc()),
+      ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         theme: ThemeData(scaffoldBackgroundColor: const Color(0xFFFAFAFC)),
