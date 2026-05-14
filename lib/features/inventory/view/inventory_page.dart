@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dockflow_app/features/inventory/inventory_bloc/inventory_bloc.dart';
+import 'package:dockflow_app/features/inventory/view/product_detail_page.dart';
 
 class InventoryPage extends StatefulWidget {
   const InventoryPage({super.key});
@@ -148,10 +149,10 @@ class _InventoryPageState extends State<InventoryPage> {
                 ),
                 child: const Row(
                   children: [
-                    Icon(Icons.qr_code_scanner, color: Colors.white, size: 18),
+                    Icon(Icons.shopping_cart, color: Colors.white, size: 18),
                     SizedBox(width: 8),
                     Text(
-                      "Scan Barcode",
+                      "Keranjang",
                       style: TextStyle(color: Colors.white, fontSize: 12),
                     ),
                   ],
@@ -479,24 +480,33 @@ class _InventoryPageState extends State<InventoryPage> {
       itemCount: products.length,
       itemBuilder: (context, index) {
         final product = products[index];
-        return _buildProductItem(product);
+        return _buildProductItem(context, product);
       },
     );
   }
 
-  Widget _buildProductItem(product) {
+  Widget _buildProductItem(BuildContext context, product) {
     Color statusColor = product.statusColor == 'orange'
         ? Colors.orange
         : Colors.green;
 
-    return Container(
-      margin: const EdgeInsets.only(bottom: 12),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade100),
-      ),
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => ProductDetailPage(product: product),
+          ),
+        );
+      },
+      child: Container(
+        margin: const EdgeInsets.only(bottom: 12),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(12),
+          border: Border.all(color: Colors.grey.shade100),
+        ),
       child: Row(
         children: [
           Container(
@@ -583,6 +593,7 @@ class _InventoryPageState extends State<InventoryPage> {
           const Icon(Icons.chevron_right, color: Colors.grey),
         ],
       ),
+    ),
     );
   }
 

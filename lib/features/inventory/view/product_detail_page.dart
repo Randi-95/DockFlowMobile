@@ -2,14 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:dockflow_app/features/inventory/inventory_models/product_model.dart';
 import 'package:intl/intl.dart';
 
-class ProductDetailPage extends StatelessWidget {
+class ProductDetailPage extends StatefulWidget {
   final ProductModel product;
 
   const ProductDetailPage({super.key, required this.product});
 
   @override
+  State<ProductDetailPage> createState() => _ProductDetailPageState();
+}
+
+class _ProductDetailPageState extends State<ProductDetailPage> {
+  int _quantity = 1;
+
+  @override
   Widget build(BuildContext context) {
-    Color statusColor = product.statusColor == 'orange'
+    Color statusColor = widget.product.statusColor == 'orange'
         ? Colors.orange
         : Colors.green;
 
@@ -46,12 +53,10 @@ class ProductDetailPage extends StatelessWidget {
             Container(
               width: double.infinity,
               height: 250,
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: product.imageUrl != null && product.imageUrl!.isNotEmpty
+              decoration: BoxDecoration(color: Colors.white),
+              child: widget.product.imageUrl != null && widget.product.imageUrl!.isNotEmpty
                   ? Image.network(
-                      'http://127.0.0.1:8000/storage/${product.imageUrl}',
+                      'http://127.0.0.1:8000/storage/${widget.product.imageUrl}',
                       fit: BoxFit.contain,
                       errorBuilder: (context, error, stackTrace) {
                         return const Center(
@@ -92,7 +97,7 @@ class ProductDetailPage extends StatelessWidget {
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
-                          product.status,
+                          widget.product.status,
                           style: TextStyle(
                             color: statusColor,
                             fontSize: 12,
@@ -101,7 +106,7 @@ class ProductDetailPage extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        currencyFormatter.format(product.price),
+                        currencyFormatter.format(widget.product.price),
                         style: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -112,7 +117,7 @@ class ProductDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   Text(
-                    product.name,
+                    widget.product.name,
                     style: const TextStyle(
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
@@ -121,7 +126,7 @@ class ProductDetailPage extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "Kode SKU: ${product.skuCode}",
+                    "Kode SKU: ${widget.product.skuCode}",
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   const SizedBox(height: 20),
@@ -136,12 +141,12 @@ class ProductDetailPage extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 12),
-                  _buildSpecRow("Kategori", product.categoryName),
-                  _buildSpecRow("Satuan", product.unit),
-                  _buildSpecRow("Lokasi Rak", product.rackLocation),
-                  
+                  _buildSpecRow("Kategori", widget.product.categoryName),
+                  _buildSpecRow("Satuan", widget.product.unit),
+                  _buildSpecRow("Lokasi Rak", widget.product.rackLocation),
+
                   const SizedBox(height: 20),
-                  
+
                   // Stock
                   Container(
                     padding: const EdgeInsets.all(16),
@@ -155,7 +160,10 @@ class ProductDetailPage extends StatelessWidget {
                       children: [
                         Row(
                           children: [
-                            const Icon(Icons.inventory_2_outlined, color: Colors.blue),
+                            const Icon(
+                              Icons.inventory_2_outlined,
+                              color: Colors.blue,
+                            ),
                             const SizedBox(width: 12),
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -179,7 +187,7 @@ class ProductDetailPage extends StatelessWidget {
                           ],
                         ),
                         Text(
-                          "${product.stockQty} ${product.unit}",
+                          "${widget.product.stockQty} ${widget.product.unit}",
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -192,7 +200,7 @@ class ProductDetailPage extends StatelessWidget {
                 ],
               ),
             ),
-            const SizedBox(height: 100),  // padding for bottom bar
+            const SizedBox(height: 100), // padding for bottom bar
           ],
         ),
       ),
@@ -208,34 +216,94 @@ class ProductDetailPage extends StatelessWidget {
             ),
           ],
         ),
-        child: Row(
-          children: [
-            Expanded(
-              child: ElevatedButton.icon(
-                onPressed: product.stockQty > 0 ? () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text('${product.name} ditambahkan ke keranjang!'),
-                      backgroundColor: Colors.green,
-                    ),
-                  );
-                } : null,
-                icon: const Icon(Icons.shopping_cart_checkout, color: Colors.white),
-                label: const Text(
-                  "Tambahkan ke Keranjang",
-                  style: TextStyle(color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+        child: SafeArea(
+          child: Row(
+            children: [
+              Container(
+                height: 50,
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.grey.shade300),
+                  borderRadius: BorderRadius.circular(12),
                 ),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0XFF0052CC),
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  disabledBackgroundColor: Colors.grey,
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.remove, color: Color(0XFF003366)),
+                      onPressed: _quantity > 1
+                          ? () {
+                              setState(() {
+                                _quantity--;
+                              });
+                            }
+                          : null,
+                    ),
+                    Container(
+                      width: 30,
+                      alignment: Alignment.center,
+                      child: Text(
+                        '$_quantity',
+                        style: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0XFF003366),
+                        ),
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.add, color: Color(0XFF003366)),
+                      onPressed: _quantity < widget.product.stockQty
+                          ? () {
+                              setState(() {
+                                _quantity++;
+                              });
+                            }
+                          : null,
+                    ),
+                  ],
                 ),
               ),
-            ),
-          ],
+              const SizedBox(width: 16),
+              Expanded(
+                child: SizedBox(
+                  height: 50,
+                  child: ElevatedButton.icon(
+                    onPressed: widget.product.stockQty > 0
+                        ? () {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  '$_quantity ${widget.product.unit} ${widget.product.name} ditambahkan ke keranjang!',
+                                ),
+                                backgroundColor: Colors.green,
+                              ),
+                            );
+                          }
+                        : null,
+                    icon: const Icon(
+                      Icons.shopping_cart_checkout,
+                      color: Colors.white,
+                    ),
+                    label: const Text(
+                      "Tambahkan",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0XFF0052CC),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      disabledBackgroundColor: Colors.grey,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
