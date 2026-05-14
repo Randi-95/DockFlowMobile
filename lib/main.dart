@@ -2,7 +2,6 @@ import 'package:dockflow_app/core/storage/authstorage.dart';
 import 'package:dockflow_app/features/auth/auth_bloc/auth_bloc.dart';
 import 'package:dockflow_app/features/auth/view/login.dart';
 import 'package:dockflow_app/features/history/history_bloc/history_bloc.dart';
-import 'package:dockflow_app/features/inventory/inventory.dart';
 import 'package:dockflow_app/features/inventory/inventory_bloc/inventory_bloc.dart';
 import 'package:dockflow_app/features/mainpage/mainpage.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +39,6 @@ class MyApp extends StatelessWidget {
         routes: {
           '/loginpage': (context) => LoginPage(),
           '/mainpage': (context) => MainPage(),
-          '/inventorypage': (context) => InventoryPage(),
         },
       ),
     );

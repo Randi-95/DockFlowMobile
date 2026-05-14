@@ -245,25 +245,6 @@ class _InventoryPageState extends State<InventoryPage> {
             ),
           ),
           const SizedBox(width: 10),
-          _buildFilterButton(Icons.tune, "Filter"),
-        ],
-      ),
-    );
-  }
-
-  Widget _buildFilterButton(IconData icon, String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: Colors.grey.shade200),
-      ),
-      child: Row(
-        children: [
-          Icon(icon, size: 16, color: Colors.grey[700]),
-          const SizedBox(width: 5),
-          Text(label, style: const TextStyle(fontSize: 11)),
         ],
       ),
     );
