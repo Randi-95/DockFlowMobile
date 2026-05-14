@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:dockflow_app/features/inventory/inventory_models/product_model.dart';
 import 'package:intl/intl.dart';
+import 'package:dockflow_app/features/cart/models/cart_item_model.dart';
+import 'package:dockflow_app/features/cart/services/cart_service.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final ProductModel product;
@@ -13,6 +15,7 @@ class ProductDetailPage extends StatefulWidget {
 
 class _ProductDetailPageState extends State<ProductDetailPage> {
   int _quantity = 1;
+  final CartService _cartService = CartService();
 
   @override
   Widget build(BuildContext context) {
@@ -269,15 +272,27 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                   height: 50,
                   child: ElevatedButton.icon(
                     onPressed: widget.product.stockQty > 0
-                        ? () {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  '$_quantity ${widget.product.unit} ${widget.product.name} ditambahkan ke keranjang!',
-                                ),
-                                backgroundColor: Colors.green,
-                              ),
+                        ? () async {
+                            final cartItem = CartItem(
+                              productId: widget.product.id,
+                              name: widget.product.name,
+                              imageUrl: widget.product.imageUrl,
+                              price: widget.product.price.toInt(),
+                              quantity: _quantity,
+                              unit: widget.product.unit,
                             );
+                            await _cartService.addToCart(cartItem);
+
+                            if (mounted) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text(
+                                    '$_quantity ${widget.product.unit} ${widget.product.name} ditambahkan ke keranjang!',
+                                  ),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
                           }
                         : null,
                     icon: const Icon(

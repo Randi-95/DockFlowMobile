@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dockflow_app/features/inventory/inventory_bloc/inventory_bloc.dart';
 import 'package:dockflow_app/features/inventory/view/product_detail_page.dart';
+import 'package:dockflow_app/features/cart/view/cart_page.dart';
 
 class InventoryPage extends StatefulWidget {
   const InventoryPage({super.key});
@@ -138,24 +139,32 @@ class _InventoryPageState extends State<InventoryPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              Container(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 8,
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Row(
-                  children: [
-                    Icon(Icons.shopping_cart, color: Colors.white, size: 18),
-                    SizedBox(width: 8),
-                    Text(
-                      "Keranjang",
-                      style: TextStyle(color: Colors.white, fontSize: 12),
-                    ),
-                  ],
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => const CartPage()),
+                  );
+                },
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.1),
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.shopping_cart, color: Colors.white, size: 18),
+                      SizedBox(width: 8),
+                      Text(
+                        "Keranjang",
+                        style: TextStyle(color: Colors.white, fontSize: 12),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
