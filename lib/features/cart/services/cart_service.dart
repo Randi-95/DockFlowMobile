@@ -49,6 +49,29 @@ class CartService {
     await prefs.setString(_cartKey, updatedCartJson);
   }
 
+  Future<void> updateQuantity(int productId, int newQuantity) async {
+    final prefs = await SharedPreferences.getInstance();
+    List<CartItem> cartItems = await getCartItems();
+    
+    int existingIndex = cartItems.indexWhere((i) => i.productId == productId);
+    if (existingIndex != -1) {
+      if (newQuantity <= 0) {
+        cartItems.removeAt(existingIndex);
+      } else {
+        cartItems[existingIndex] = CartItem(
+          productId: cartItems[existingIndex].productId,
+          name: cartItems[existingIndex].name,
+          imageUrl: cartItems[existingIndex].imageUrl,
+          price: cartItems[existingIndex].price,
+          quantity: newQuantity,
+          unit: cartItems[existingIndex].unit,
+        );
+      }
+      String updatedCartJson = jsonEncode(cartItems.map((i) => i.toJson()).toList());
+      await prefs.setString(_cartKey, updatedCartJson);
+    }
+  }
+
   Future<void> clearCart() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_cartKey);

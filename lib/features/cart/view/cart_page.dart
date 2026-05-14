@@ -35,6 +35,11 @@ class _CartPageState extends State<CartPage> {
     _loadCartItems();
   }
 
+  Future<void> _updateQuantity(int productId, int newQuantity) async {
+    await _cartService.updateQuantity(productId, newQuantity);
+    _loadCartItems();
+  }
+
   Future<void> _clearCart() async {
     await _cartService.clearCart();
     _loadCartItems();
@@ -167,16 +172,47 @@ class _CartPageState extends State<CartPage> {
                                   currencyFormatter.format(item.price),
                                   style: const TextStyle(color: Color(0XFF0052CC), fontWeight: FontWeight.bold, fontSize: 13),
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  "Jumlah: ${item.quantity} ${item.unit}",
-                                  style: const TextStyle(color: Colors.grey, fontSize: 12),
+                                const SizedBox(height: 8),
+                                Row(
+                                  children: [
+                                    InkWell(
+                                      onTap: () => _updateQuantity(item.productId, item.quantity - 1),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.grey.shade300),
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: const Icon(Icons.remove, size: 16, color: Color(0XFF003366)),
+                                      ),
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                                      child: Text(
+                                        '${item.quantity}',
+                                        style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                                      ),
+                                    ),
+                                    InkWell(
+                                      onTap: () => _updateQuantity(item.productId, item.quantity + 1),
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: BoxDecoration(
+                                          border: Border.all(color: Colors.grey.shade300),
+                                          borderRadius: BorderRadius.circular(6),
+                                        ),
+                                        child: const Icon(Icons.add, size: 16, color: Color(0XFF003366)),
+                                      ),
+                                    ),
+                                    const SizedBox(width: 8),
+                                    Text(item.unit, style: const TextStyle(color: Colors.grey, fontSize: 12)),
+                                  ],
                                 ),
                               ],
                             ),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.remove_circle_outline, color: Colors.red),
+                            icon: const Icon(Icons.delete_outline, color: Colors.red),
                             onPressed: () => _removeItem(item.productId),
                           ),
                         ],
