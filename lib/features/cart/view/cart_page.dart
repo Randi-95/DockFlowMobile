@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dockflow_app/features/cart/models/cart_item_model.dart';
 import 'package:dockflow_app/features/cart/services/cart_service.dart';
+import 'package:dockflow_app/features/checkout/view/checkout_page.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({super.key});
@@ -255,7 +256,12 @@ class _CartPageState extends State<CartPage> {
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // TODO: Implement Checkout logic if needed
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CheckoutPage(cartItems: _cartItems),
+                          ),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: const Color(0XFF0052CC),
