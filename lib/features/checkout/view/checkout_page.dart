@@ -113,7 +113,6 @@ class _CheckoutPageState extends State<CheckoutPage> {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Checkout berhasil!')),
           );
-          // Navigate back twice to go to Home/Inventory instead of Cart
           Navigator.of(context).popUntil((route) => route.isFirst);
         }
       } else {
@@ -202,10 +201,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
                               });
                             },
                             fieldViewBuilder: (context, textEditingController, focusNode, onFieldSubmitted) {
-                              // Sync controllers
                               textEditingController.addListener(() {
                                 _vesselController.text = textEditingController.text;
-                                // Reset vesselId if text changes
                                 if (_selectedVesselId != null && textEditingController.text != _vessels.firstWhere((v) => v.id == _selectedVesselId).name) {
                                    setState(() => _selectedVesselId = null);
                                 }
@@ -269,7 +266,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                                   Text(
                                     _selectedDate == null 
                                       ? "Pilih Tanggal" 
-                                      : DateFormat('dd MMMM yyyy', 'id').format(_selectedDate!),
+                                      : DateFormat('dd MMMM yyyy').format(_selectedDate!),
                                     style: TextStyle(
                                       color: _selectedDate == null ? Colors.grey : Colors.black87,
                                     ),
