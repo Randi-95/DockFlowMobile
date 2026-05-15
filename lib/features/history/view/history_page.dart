@@ -461,7 +461,21 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
     );
     String formattedPrice = formatter.format(booking.totalEstimatedPrice);
 
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        showDialog(
+          context: context,
+          builder: (context) => TicketDialog(
+            booking: booking,
+            formattedDate: formattedDate,
+            formattedEstDate: formattedEstDate,
+            formattedPrice: formattedPrice,
+            statusText: statusText,
+            statusColor: statusColor,
+          ),
+        );
+      },
+      child: Container(
       margin: const EdgeInsets.only(bottom: 15),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -693,6 +707,159 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
           ),
         ],
       ),
+    );
+  }
+}
+
+class TicketDialog extends StatelessWidget {
+  final dynamic booking;
+  final String formattedDate;
+  final String formattedEstDate;
+  final String formattedPrice;
+  final String statusText;
+  final Color statusColor;
+
+  const TicketDialog({
+    Key? key,
+    required this.booking,
+    required this.formattedDate,
+    required this.formattedEstDate,
+    required this.formattedPrice,
+    required this.statusText,
+    required this.statusColor,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      insetPadding: const EdgeInsets.symmetric(horizontal: 20),
+      child: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Top Section
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: const BoxDecoration(
+                color: Color(0XFF003366),
+                borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+              ),
+              child: Column(
+                children: [
+                  const Text("E-Ticket Pesanan",
+                      style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18)),
+                  const SizedBox(height: 10),
+                  Text(booking.bookingNumber,
+                      style: const TextStyle(
+                          color: Colors.white70, fontSize: 14)),
+                ],
+              ),
+            ),
+
+            // Middle Section (Details)
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  _buildDetailRow("Kapal", booking.vesselName ?? "-"),
+                  const SizedBox(height: 10),
+                  _buildDetailRow("Tanggal Pesan", formattedDate),
+                  const SizedBox(height: 10),
+                  _buildDetailRow("Estimasi Tiba", formattedEstDate),
+                  const SizedBox(height: 10),
+                  _buildDetailRow(
+                      "Lokasi Dermaga", booking.dockLocation ?? "-"),
+                  const SizedBox(height: 10),
+                  _buildDetailRow("Total Item", "${booking.itemsCount} Item"),
+                  const SizedBox(height: 10),
+                  _buildDetailRow("Total Harga", formattedPrice),
+                  const SizedBox(height: 10),
+                  _buildDetailRow("Status", statusText, valueColor: statusColor),
+                ],
+              ),
+            ),
+
+            // Dashed Divider
+            Row(
+              children: List.generate(
+                30,
+                (index) => Expanded(
+                  child: Container(
+                    height: 1,
+                    color: index.isEven
+                        ? Colors.transparent
+                        : Colors.grey.shade400,
+                  ),
+                ),
+              ),
+            ),
+
+            // Bottom Section (Barcode)
+            Padding(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  const Text("Tunjukkan barcode ini saat pengambilan",
+                      style: TextStyle(color: Colors.grey, fontSize: 12)),
+                  const SizedBox(height: 15),
+                  if (booking.barcodeUrl != null &&
+                      booking.barcodeUrl!.isNotEmpty)
+                    Image.network(
+                      booking.barcodeUrl!,
+                      height: 80,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => const Icon(
+                          Icons.qr_code_scanner,
+                          size: 80,
+                          color: Colors.grey),
+                    )
+                  else
+                    const Icon(Icons.qr_code_scanner,
+                        size: 80, color: Colors.grey),
+                  const SizedBox(height: 15),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      onPressed: () => Navigator.pop(context),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0XFF003366),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                      ),
+                      child: const Text("Tutup",
+                          style: TextStyle(color: Colors.white)),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDetailRow(String label, String value, {Color? valueColor}) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(label, style: const TextStyle(color: Colors.grey, fontSize: 13)),
+        Text(value,
+            style: TextStyle(
+                color: valueColor ?? Colors.black87,
+                fontWeight: FontWeight.bold,
+                fontSize: 13)),
+      ],
     );
   }
 }

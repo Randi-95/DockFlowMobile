@@ -14,6 +14,8 @@ class BookingModel {
   final String? estimatedDeliveryDate;
   final double totalEstimatedPrice;
   final int itemsCount;
+  final String? barcodeUrl;
+  final String? dockLocation;
 
   BookingModel({
     required this.id,
@@ -24,6 +26,8 @@ class BookingModel {
     this.estimatedDeliveryDate,
     required this.totalEstimatedPrice,
     required this.itemsCount,
+    this.barcodeUrl,
+    this.dockLocation,
   });
 
   factory BookingModel.fromJson(Map<String, dynamic> json) => BookingModel(
@@ -37,6 +41,8 @@ class BookingModel {
             ? double.parse(json["total_estimated_price"])
             : json["total_estimated_price"].toDouble(),
         itemsCount: json["items_count"] ?? 0,
+        barcodeUrl: json["barcode_url"],
+        dockLocation: json["dock_location"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -48,5 +54,7 @@ class BookingModel {
         "estimated_delivery_date": estimatedDeliveryDate,
         "total_estimated_price": totalEstimatedPrice,
         "items_count": itemsCount,
+        "barcode_url": barcodeUrl,
+        "dock_location": dockLocation,
       };
 }
