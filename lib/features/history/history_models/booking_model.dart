@@ -16,6 +16,7 @@ class BookingModel {
   final int itemsCount;
   final String? barcodeUrl;
   final String? dockLocation;
+  final List<BookingItemModel> items;
 
   BookingModel({
     required this.id,
@@ -28,6 +29,7 @@ class BookingModel {
     required this.itemsCount,
     this.barcodeUrl,
     this.dockLocation,
+    required this.items,
   });
 
   factory BookingModel.fromJson(Map<String, dynamic> json) => BookingModel(
@@ -43,6 +45,10 @@ class BookingModel {
         itemsCount: json["items_count"] ?? 0,
         barcodeUrl: json["barcode_url"],
         dockLocation: json["dock_location"],
+        items: json["items"] != null
+            ? List<BookingItemModel>.from(
+                json["items"].map((x) => BookingItemModel.fromJson(x)))
+            : [],
       );
 
   Map<String, dynamic> toJson() => {
@@ -56,5 +62,37 @@ class BookingModel {
         "items_count": itemsCount,
         "barcode_url": barcodeUrl,
         "dock_location": dockLocation,
+        "items": List<dynamic>.from(items.map((x) => x.toJson())),
+      };
+}
+
+class BookingItemModel {
+  final String productName;
+  final int qty;
+  final double price;
+  final String? imageUrl;
+
+  BookingItemModel({
+    required this.productName,
+    required this.qty,
+    required this.price,
+    this.imageUrl,
+  });
+
+  factory BookingItemModel.fromJson(Map<String, dynamic> json) =>
+      BookingItemModel(
+        productName: json["product_name"],
+        qty: json["qty"],
+        price: (json["price"] is String)
+            ? double.parse(json["price"])
+            : json["price"].toDouble(),
+        imageUrl: json["image_url"],
+      );
+
+  Map<String, dynamic> toJson() => {
+        "product_name": productName,
+        "qty": qty,
+        "price": price,
+        "image_url": imageUrl,
       };
 }
