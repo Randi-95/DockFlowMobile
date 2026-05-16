@@ -27,5 +27,18 @@ class NotificationModel {
     );
   }
 
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'type': type,
+      'data': {
+        'title': title,
+        'body': body,
+      },
+      'read_at': readAt?.toIso8601String(),
+      'created_at': createdAt.toIso8601String(),
+    };
+  }
+
   bool get isRead => readAt != null;
 }
