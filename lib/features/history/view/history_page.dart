@@ -991,27 +991,7 @@ class TicketPage extends StatelessWidget {
             const SizedBox(height: 20),
 
             // Download Button
-            SizedBox(
-              width: double.infinity,
-              child: OutlinedButton.icon(
-                onPressed: () {},
-                icon: const Icon(Icons.download, color: Color(0XFF4A85F6), size: 18),
-                label: const Text(
-                  "Unduh Tiket",
-                  style: TextStyle(
-                    color: Color(0XFF4A85F6),
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                style: OutlinedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 15),
-                  side: const BorderSide(color: Color(0XFF4A85F6)),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                ),
-              ),
-            ),
+            
             const SizedBox(height: 20),
           ],
         ),
