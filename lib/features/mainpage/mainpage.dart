@@ -94,10 +94,19 @@ class _MainPageState extends State<MainPage> {
                   label: 'Riwayat',
                 ),
                 BottomNavigationBarItem(
-                  icon: Badge(
-                    label: const Text('3'),
-                    backgroundColor: Colors.red,
-                    child: const Icon(Icons.notifications_none_rounded),
+                  icon: BlocBuilder<NotificationBloc, NotificationState>(
+                    builder: (context, state) {
+                      int unreadCount = 0;
+                      if (state is NotificationLoaded) {
+                        unreadCount = state.notifications.where((n) => !n.isRead).length;
+                      }
+                      return Badge(
+                        label: Text(unreadCount.toString()),
+                        backgroundColor: Colors.red,
+                        isLabelVisible: unreadCount > 0,
+                        child: const Icon(Icons.notifications_none_rounded),
+                      );
+                    },
                   ),
                   label: 'Notifikasi',
                 ),
