@@ -3,6 +3,7 @@ import 'package:dockflow_app/features/home/home_bloc/home_bloc.dart';
 import 'package:dockflow_app/features/home/view/home.dart';
 import 'package:dockflow_app/features/inventory/view/inventory_page.dart';
 import 'package:dockflow_app/features/profile/profile.dart';
+import 'package:dockflow_app/core/network/fcm_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -23,6 +24,12 @@ class _MainPageState extends State<MainPage> {
     const Center(child: Text("inventory")),
     const ProfilePage(),
   ];
+
+  @override
+  void initState() {
+    super.initState();    
+    FCMService().updateToken();
+  }
 
   @override
   Widget build(BuildContext context) {

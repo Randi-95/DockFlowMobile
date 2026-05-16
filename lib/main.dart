@@ -1,7 +1,10 @@
 import 'package:dockflow_app/core/storage/authstorage.dart';
 import 'package:dockflow_app/features/auth/auth_bloc/auth_bloc.dart';
 import 'package:dockflow_app/features/auth/view/login.dart';
+import 'package:dockflow_app/core/network/fcm_service.dart';
 import 'package:dockflow_app/features/history/history_bloc/history_bloc.dart';
+import 'package:firebase_core/firebase_core.dart';
+// import 'package:dockflow_app/firebase_options.dart'; // Uncomment after running flutterfire configure
 import 'package:dockflow_app/features/inventory/inventory_bloc/inventory_bloc.dart';
 import 'package:dockflow_app/features/mainpage/mainpage.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +15,14 @@ void main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
 
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  try {
+    await Firebase.initializeApp();    
+    FCMService().initNotification();
+  } catch (e) {
+    print("Firebase initialization failed: $e");
+  }
+
   final String? token = await AuthStorage.readToken();
   FlutterNativeSplash.remove();
 

@@ -11,7 +11,16 @@ class AuthStorage{
     return await _storage.read(key: 'token');
   }
 
-  static Future<void> deleteToken() async{
-    return await _storage.delete(key: 'token');
+  static Future<void> saveUserId(String userId) async {
+    return await _storage.write(key: 'user_id', value: userId);
+  }
+
+  static Future<String?> readUserId() async {
+    return await _storage.read(key: 'user_id');
+  }
+
+  static Future<void> deleteToken() async {
+    await _storage.delete(key: 'token');
+    await _storage.delete(key: 'user_id');
   }
 }

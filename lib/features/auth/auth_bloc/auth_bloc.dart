@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:dockflow_app/core/network/api_client.dart';
+import 'package:dockflow_app/core/network/fcm_service.dart';
 import 'package:dockflow_app/core/storage/authstorage.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 part 'auth_event.dart';
@@ -19,7 +20,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
         if (response.statusCode == 200) {
           final String token = response.data['token'];
-          AuthStorage.saveToken(token);
+          final String userId = response.data['user']['id'].toString();
+          
+          await AuthStorage.saveToken(token);
+          await AuthStorage.saveUserId(userId);
+
+          final fcmService = FCMService();
+          await fcmService.initNotification();
+
           emit(AuthSucces(succesMessage: "Login Succes"));
         } else {
           emit(AuthError(errorMessage: "Invalid Credentials"));
@@ -28,8 +36,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         String errorMsg = "Terjadi kesalahan koneksi";
 
         if (e.response != null) {
-          // Mengambil pesan error dari body response server jika ada
-          errorMsg = e.response?.data['message'] ?? "Email atau Password salah";
+           errorMsg = e.response?.data['message'] ?? "Email atau Password salah";
         }
 
         emit(AuthError(errorMessage: errorMsg));
