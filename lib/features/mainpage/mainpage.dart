@@ -4,6 +4,9 @@ import 'package:dockflow_app/features/home/view/home.dart';
 import 'package:dockflow_app/features/inventory/view/inventory_page.dart';
 import 'package:dockflow_app/features/profile/profile.dart';
 import 'package:dockflow_app/core/network/fcm_service.dart';
+import 'package:dockflow_app/features/notifications/view/notification_screen.dart';
+import 'package:dockflow_app/features/notifications/bloc/notification_bloc.dart';
+import 'package:dockflow_app/features/notifications/repository/notification_repository.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,7 +24,7 @@ class _MainPageState extends State<MainPage> {
     const HomePage(),
     const InventoryPage(),
     const OrderHistoryPage(),
-    const Center(child: Text("inventory")),
+    const NotificationScreen(),
     const ProfilePage(),
   ];
 
@@ -34,7 +37,14 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
-      providers: [BlocProvider(create: (context) => HomeBloc()..add(GetHomeEvent()))],
+      providers: [
+        BlocProvider(create: (context) => HomeBloc()..add(GetHomeEvent())),
+        BlocProvider(
+          create: (context) => NotificationBloc(
+            repository: NotificationRepository(),
+          )..add(FetchNotifications()),
+        ),
+      ],
       child: Scaffold(
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(
