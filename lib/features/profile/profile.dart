@@ -394,7 +394,6 @@ class _ProfileView extends StatelessWidget {
     );
   }
 
-  // ── Menu Section ─────────────────────────────────────────────────────────────
 
   Widget _buildMenuSection(BuildContext context, ProfileData profile) {
     return Container(
