@@ -21,7 +21,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       LoadProfileEvent event, Emitter<ProfileState> emit) async {
     final prefs = await SharedPreferences.getInstance();
 
-    // 1. Cek cache lokal
     final cachedProfile = prefs.getString(_kProfileCacheKey);
     final cachedStats = prefs.getString(_kStatsCacheKey);
     bool hasCache = false;
