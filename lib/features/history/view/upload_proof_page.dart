@@ -112,10 +112,10 @@ class _UploadProofPageState extends State<UploadProofPage> {
         ),
       });
 
+     
       final response = await _api.dio.post(
         '/booking/${widget.bookingId}/upload-proof',
         data: formData,
-        options: Options(contentType: 'multipart/form-data'),
       );
 
       if (!mounted) return;
@@ -127,8 +127,19 @@ class _UploadProofPageState extends State<UploadProofPage> {
       }
     } on DioException catch (e) {
       if (!mounted) return;
-      final msg = e.response?.data?['message'] ?? 'Terjadi kesalahan koneksi';
+      
+      debugPrint('[UploadProof] DioException: ${e.message}');
+      debugPrint('[UploadProof] Response status: ${e.response?.statusCode}');
+      debugPrint('[UploadProof] Response data: ${e.response?.data}');
+
+      final msg = e.response?.data?['message'] ??
+          e.response?.data?['error'] ??
+          'Terjadi kesalahan koneksi (${e.response?.statusCode ?? 'no response'})';
       _showError(msg);
+    } catch (e) {
+      if (!mounted) return;
+      debugPrint('[UploadProof] Unexpected error: $e');
+      _showError('Terjadi kesalahan tidak terduga');
     } finally {
       if (mounted) setState(() => _isUploading = false);
     }
