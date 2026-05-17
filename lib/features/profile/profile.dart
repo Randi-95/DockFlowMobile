@@ -165,7 +165,7 @@ class _ProfileView extends StatelessWidget {
                             width: 7,
                             height: 7,
                             decoration: BoxDecoration(
-                              color: profile.isActive == 1
+                              color: profile.isActive
                                   ? Colors.greenAccent
                                   : Colors.redAccent,
                               shape: BoxShape.circle,
@@ -173,7 +173,7 @@ class _ProfileView extends StatelessWidget {
                           ),
                           const SizedBox(width: 8),
                           Text(
-                            profile.isActive == 1 ? "Aktif" : "Tidak Aktif",
+                            profile.isActive ? "Aktif" : "Tidak Aktif",
                             style: const TextStyle(
                               color: Colors.white,
                               fontSize: 12,

@@ -5,7 +5,7 @@ class ProfileData {
   final String email;
   final String role;
   final String employeeId;
-  final int isActive;
+  final bool isActive;
   final int bookingActive;
 
   ProfileData({
@@ -23,7 +23,7 @@ class ProfileData {
       email: json['email'] ?? '',
       role: json['role'] ?? '',
       employeeId: json['employee_id'] ?? '',
-      isActive: json['is_active'] ?? 0,
+      isActive: json['is_active'] == true || json['is_active'] == 1,
       bookingActive: bookingActive,
     );
   }
@@ -34,7 +34,7 @@ class ProfileData {
       email: json['email'] ?? '',
       role: json['role'] ?? '',
       employeeId: json['employee_id'] ?? '',
-      isActive: json['is_active'] ?? 0,
+      isActive: json['is_active'] == true || json['is_active'] == 1,
       bookingActive: json['booking_active'] ?? 0,
     );
   }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:dockflow_app/features/profile/profile_service.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -32,7 +33,9 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
         emit(ProfileLoaded(profile: profile, stats: stats));
         hasCache = true;
-      } catch (_) {
+      } catch (e) {
+        // Abaikan error parse cache, lanjut ambil dari API
+        debugPrint('[ProfileBloc] Cache parse error: $e');
       }
     }
 
@@ -48,11 +51,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       await prefs.setString(_kStatsCacheKey, jsonEncode(stats.toJson()));
 
       emit(ProfileLoaded(profile: profile, stats: stats));
-    } on DioException catch (_) {
+    } on DioException catch (e) {
+      debugPrint('[ProfileBloc] Network error: $e');
       if (!hasCache) {
         emit(ProfileError('Tidak ada koneksi internet.\nData profil belum tersedia.'));
       }
-    } catch (_) {
+    } catch (e) {
+      debugPrint('[ProfileBloc] Unknown error: $e');
       if (!hasCache) {
         emit(ProfileError('Gagal memuat data profil. Silakan coba lagi.'));
       }
