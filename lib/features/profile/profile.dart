@@ -3,6 +3,7 @@ import 'package:art_sweetalert/art_sweetalert.dart'
 import 'package:dockflow_app/core/storage/authstorage.dart';
 import 'package:dockflow_app/features/profile/bloc/profile_bloc.dart';
 import 'package:dockflow_app/features/profile/profile_service.dart';
+import 'package:dockflow_app/features/profile/view/job_info_page.dart';
 import 'package:dockflow_app/features/profile/view/personal_info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -429,7 +430,14 @@ class _ProfileView extends StatelessWidget {
             icon: Icons.badge_outlined,
             title: "Informasi Pekerjaan",
             subtitle: "Detail posisi, divisi, dan informasi kerja",
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => const JobInfoPage(),
+                ),
+              );
+            },
           ),
           const Divider(height: 1, indent: 70),
           _buildMenuItem(
