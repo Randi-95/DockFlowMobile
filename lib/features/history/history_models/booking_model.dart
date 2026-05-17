@@ -17,6 +17,7 @@ class BookingModel {
   final String? barcodeUrl;
   final String? dockLocation;
   final List<BookingItemModel> items;
+  final String? proofOfDeliveryUrl;
 
   BookingModel({
     required this.id,
@@ -30,6 +31,7 @@ class BookingModel {
     this.barcodeUrl,
     this.dockLocation,
     required this.items,
+    this.proofOfDeliveryUrl,
   });
 
   factory BookingModel.fromJson(Map<String, dynamic> json) => BookingModel(
@@ -49,6 +51,7 @@ class BookingModel {
             ? List<BookingItemModel>.from(
                 json["items"].map((x) => BookingItemModel.fromJson(x)))
             : [],
+        proofOfDeliveryUrl: json["proof_of_delivery_url"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -63,6 +66,7 @@ class BookingModel {
         "barcode_url": barcodeUrl,
         "dock_location": dockLocation,
         "items": List<dynamic>.from(items.map((x) => x.toJson())),
+        "proof_of_delivery_url": proofOfDeliveryUrl,
       };
 }
 

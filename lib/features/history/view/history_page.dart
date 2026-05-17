@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:dockflow_app/features/history/history_bloc/history_bloc.dart';
+import 'package:dockflow_app/features/history/view/upload_proof_page.dart';
 import 'package:intl/intl.dart';
 
 class OrderHistoryPage extends StatefulWidget {
@@ -219,6 +220,8 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
               "confirmed",
             ),
             _tabItem("Diproses", _selectedStatus == "processing", "processing"),
+            _tabItem("Dikirim", _selectedStatus == "on_delivery", "on_delivery"),
+            _tabItem("Menunggu Verifikasi", _selectedStatus == "pending_completion", "pending_completion"),
             _tabItem("Selesai", _selectedStatus == "completed", "completed"),
             _tabItem("Dibatalkan", _selectedStatus == "cancelled", "cancelled"),
           ],
@@ -620,6 +623,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
         return Colors.green;
       case 'processing':
         return Colors.orangeAccent;
+      case 'on_delivery':
+        return const Color(0xFF0052CC);
+      case 'pending_completion':
+        return Colors.amber.shade700;
       case 'completed':
         return Colors.purple;
       case 'cancelled':
@@ -637,6 +644,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
         return Icons.check_circle;
       case 'processing':
         return Icons.settings;
+      case 'on_delivery':
+        return Icons.local_shipping;
+      case 'pending_completion':
+        return Icons.hourglass_top;
       case 'completed':
         return Icons.directions_boat;
       case 'cancelled':
@@ -654,6 +665,10 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
         return 'Dikonfirmasi';
       case 'processing':
         return 'Diproses';
+      case 'on_delivery':
+        return 'Dalam Pengiriman';
+      case 'pending_completion':
+        return 'Menunggu Verifikasi';
       case 'completed':
         return 'Selesai';
       case 'cancelled':
@@ -716,7 +731,7 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
   }
 }
 
-class TicketPage extends StatelessWidget {
+class TicketPage extends StatefulWidget {
   final dynamic booking;
   final String formattedDate;
   final String formattedEstDate;
@@ -735,7 +750,18 @@ class TicketPage extends StatelessWidget {
   }) : super(key: key);
 
   @override
+  State<TicketPage> createState() => _TicketPageState();
+}
+
+class _TicketPageState extends State<TicketPage> {
+  @override
   Widget build(BuildContext context) {
+    final booking = widget.booking;
+    final formattedDate = widget.formattedDate;
+    final formattedEstDate = widget.formattedEstDate;
+    final formattedPrice = widget.formattedPrice;
+    final statusText = widget.statusText;
+    final statusColor = widget.statusColor;
     return Scaffold(
       backgroundColor: const Color(0XFFF8F9FA),
       appBar: AppBar(
@@ -990,8 +1016,100 @@ class TicketPage extends StatelessWidget {
 
             const SizedBox(height: 20),
 
-            // Download Button
-            
+            // Tombol Upload Bukti (hanya saat on_delivery)
+            if (booking.status == 'on_delivery')
+              SizedBox(
+                width: double.infinity,
+                height: 52,
+                child: ElevatedButton.icon(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF003366),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(14),
+                    ),
+                    elevation: 4,
+                  ),
+                  icon: const Icon(Icons.cloud_upload_outlined, color: Colors.white),
+                  label: const Text(
+                    'Upload Bukti Pengiriman',
+                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                  ),
+                  onPressed: () async {
+                    final refreshed = await Navigator.push<bool>(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => UploadProofPage(
+                          bookingId: booking.id,
+                          bookingNumber: booking.bookingNumber,
+                        ),
+                      ),
+                    );
+                    if (refreshed == true && context.mounted) {
+                      Navigator.pop(context, true);
+                    }
+                  },
+                ),
+              ),
+
+            // Info menunggu verifikasi (saat pending_completion)
+            if (booking.status == 'pending_completion') ...
+              [
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFFFF8E1),
+                    borderRadius: BorderRadius.circular(14),
+                    border: Border.all(color: const Color(0xFFFFE082)),
+                  ),
+                  child: const Row(
+                    children: [
+                      Icon(Icons.hourglass_top, color: Color(0xFFF59E0B), size: 22),
+                      SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Menunggu Verifikasi Admin',
+                              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF92400E), fontSize: 13),
+                            ),
+                            SizedBox(height: 4),
+                            Text(
+                              'Bukti pengiriman sudah dikirim. Admin sedang memverifikasi pesanan Anda.',
+                              style: TextStyle(color: Color(0xFF92400E), fontSize: 11),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 12),
+                // Tampilkan foto bukti jika ada
+                if (booking.proofOfDeliveryUrl != null) ...
+                  [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: const Text(
+                        'Bukti Pengiriman Diunggah:',
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(12),
+                      child: Image.network(
+                        booking.proofOfDeliveryUrl!,
+                        width: double.infinity,
+                        height: 200,
+                        fit: BoxFit.cover,
+                        errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 60, color: Colors.grey),
+                      ),
+                    ),
+                  ],
+              ],
+
             const SizedBox(height: 20),
           ],
         ),
@@ -1015,6 +1133,7 @@ class TicketPage extends StatelessWidget {
       ],
     );
   }
+
 
   Widget _buildInfoRow(String label, String value) {
     return Row(
