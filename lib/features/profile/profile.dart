@@ -1,7 +1,7 @@
 import 'package:art_sweetalert/art_sweetalert.dart'
     show ArtDialogResponse, ArtSweetAlert, ArtDialogArgs, ArtSweetAlertType;
 import 'package:dockflow_app/core/storage/authstorage.dart';
-import 'package:dockflow_app/features/profile/profile_bloc.dart';
+import 'package:dockflow_app/features/profile/bloc/profile_bloc.dart';
 import 'package:dockflow_app/features/profile/profile_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -79,13 +79,11 @@ class _ProfileView extends StatelessWidget {
     );
   }
 
-  // ── Hero / Banner ────────────────────────────────────────────────────────────
 
   Widget _buildHeroSection(ProfileData profile) {
     return Stack(
       clipBehavior: Clip.none,
       children: [
-        // Banner
         SizedBox(
           width: double.infinity,
           child: ClipRRect(
@@ -101,7 +99,6 @@ class _ProfileView extends StatelessWidget {
           ),
         ),
 
-        // Logo
         Positioned(
           top: 30,
           left: 20,
@@ -112,7 +109,6 @@ class _ProfileView extends StatelessWidget {
           ),
         ),
 
-        // Profile info
         Positioned(
           top: 110,
           left: 25,
@@ -197,8 +193,6 @@ class _ProfileView extends StatelessWidget {
     );
   }
 
-  // ── Quick Stats Row ──────────────────────────────────────────────────────────
-
   Widget _buildStatsRow(ProfileData profile, AttendanceStats stats) {
     return Container(
       margin: const EdgeInsets.fromLTRB(15, 0, 15, 12),
@@ -277,8 +271,6 @@ class _ProfileView extends StatelessWidget {
       ),
     );
   }
-
-  // ── Attendance Card ──────────────────────────────────────────────────────────
 
   Widget _buildAttendanceCard(AttendanceStats stats) {
     final now = DateTime.now();

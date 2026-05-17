@@ -27,6 +27,26 @@ class ProfileData {
       bookingActive: bookingActive,
     );
   }
+
+  factory ProfileData.fromCacheJson(Map<String, dynamic> json) {
+    return ProfileData(
+      name: json['name'] ?? '',
+      email: json['email'] ?? '',
+      role: json['role'] ?? '',
+      employeeId: json['employee_id'] ?? '',
+      isActive: json['is_active'] ?? 0,
+      bookingActive: json['booking_active'] ?? 0,
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+        'name': name,
+        'email': email,
+        'role': role,
+        'employee_id': employeeId,
+        'is_active': isActive,
+        'booking_active': bookingActive,
+      };
 }
 
 class AttendanceStats {
@@ -53,6 +73,14 @@ class AttendanceStats {
       percentage: (json['percentage'] ?? 0).toDouble(),
     );
   }
+
+  Map<String, dynamic> toJson() => {
+        'totalPresent': totalPresent,
+        'totalLate': totalLate,
+        'totalAbsent': totalAbsent,
+        'totalDayWork': totalDayWork,
+        'percentage': percentage,
+      };
 }
 
 class ProfileService {
