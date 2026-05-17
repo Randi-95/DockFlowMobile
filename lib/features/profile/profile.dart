@@ -3,6 +3,7 @@ import 'package:art_sweetalert/art_sweetalert.dart'
 import 'package:dockflow_app/core/storage/authstorage.dart';
 import 'package:dockflow_app/features/profile/bloc/profile_bloc.dart';
 import 'package:dockflow_app/features/profile/profile_service.dart';
+import 'package:dockflow_app/features/profile/view/personal_info_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -66,8 +67,7 @@ class _ProfileView extends StatelessWidget {
               children: [
                 _buildHeroSection(profile),
                 _buildAttendanceCard(stats),
-                _buildStatsRow(profile, stats),
-                _buildMenuSection(context),
+                _buildMenuSection(context, profile),
                 const SizedBox(height: 10),
                 _buildLogoutSection(context),
                 const SizedBox(height: 30),
@@ -190,85 +190,6 @@ class _ProfileView extends StatelessWidget {
           ),
         ),
       ],
-    );
-  }
-
-  Widget _buildStatsRow(ProfileData profile, AttendanceStats stats) {
-    return Container(
-      margin: const EdgeInsets.fromLTRB(15, 0, 15, 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
-            offset: const Offset(0, 4),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          _buildQuickStat(
-            Icons.badge_outlined,
-            profile.employeeId,
-            "ID Karyawan",
-            Colors.blue,
-          ),
-          _verticalDivider(),
-          _buildQuickStat(
-            Icons.shopping_bag_outlined,
-            "${profile.bookingActive}",
-            "Total Booking",
-            Colors.purple,
-          ),
-          _verticalDivider(),
-          _buildQuickStat(
-            Icons.email_outlined,
-            profile.email.length > 14
-                ? '${profile.email.substring(0, 14)}…'
-                : profile.email,
-            "Email",
-            Colors.teal,
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _verticalDivider() {
-    return Container(
-      height: 40,
-      width: 1,
-      color: Colors.grey.shade200,
-      margin: const EdgeInsets.symmetric(horizontal: 8),
-    );
-  }
-
-  Widget _buildQuickStat(
-      IconData icon, String value, String label, Color color) {
-    return Expanded(
-      child: Column(
-        children: [
-          Icon(icon, color: color, size: 20),
-          const SizedBox(height: 6),
-          Text(
-            value,
-            style: const TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: Color(0xFF1A1A1A),
-            ),
-            textAlign: TextAlign.center,
-            overflow: TextOverflow.ellipsis,
-          ),
-          Text(
-            label,
-            style: const TextStyle(fontSize: 10, color: Colors.grey),
-          ),
-        ],
-      ),
     );
   }
 
@@ -475,7 +396,7 @@ class _ProfileView extends StatelessWidget {
 
   // ── Menu Section ─────────────────────────────────────────────────────────────
 
-  Widget _buildMenuSection(BuildContext context) {
+  Widget _buildMenuSection(BuildContext context, ProfileData profile) {
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
       decoration: BoxDecoration(
@@ -495,7 +416,14 @@ class _ProfileView extends StatelessWidget {
             icon: Icons.person_outline,
             title: "Informasi Pribadi",
             subtitle: "Lihat dan kelola informasi akun Anda",
-            onTap: () {},
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => PersonalInfoPage(profile: profile),
+                ),
+              );
+            },
           ),
           const Divider(height: 1, indent: 70),
           _buildMenuItem(
