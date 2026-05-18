@@ -220,8 +220,16 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
               "confirmed",
             ),
             _tabItem("Diproses", _selectedStatus == "processing", "processing"),
-            _tabItem("Dikirim", _selectedStatus == "on_delivery", "on_delivery"),
-            _tabItem("Menunggu Verifikasi", _selectedStatus == "pending_completion", "pending_completion"),
+            _tabItem(
+              "Dikirim",
+              _selectedStatus == "on_delivery",
+              "on_delivery",
+            ),
+            _tabItem(
+              "Menunggu Verifikasi",
+              _selectedStatus == "pending_completion",
+              "pending_completion",
+            ),
             _tabItem("Selesai", _selectedStatus == "completed", "completed"),
             _tabItem("Dibatalkan", _selectedStatus == "cancelled", "cancelled"),
           ],
@@ -435,7 +443,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
     IconData statusIcon = _getStatusIcon(booking.status);
     String statusText = _getStatusText(booking.status);
 
-    // Format date
     String formattedDate = "";
     try {
       final date = DateTime.parse(booking.createdAt);
@@ -444,7 +451,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       formattedDate = booking.createdAt;
     }
 
-    // Format estimated date
     String formattedEstDate = "";
     if (booking.estimatedDeliveryDate != null) {
       try {
@@ -455,7 +461,6 @@ class _OrderHistoryPageState extends State<OrderHistoryPage> {
       }
     }
 
-    // Format price
     final formatter = NumberFormat.currency(
       locale: 'id_ID',
       symbol: 'Rp ',
@@ -785,7 +790,6 @@ class _TicketPageState extends State<TicketPage> {
         padding: const EdgeInsets.all(20),
         child: Column(
           children: [
-            // Ticket
             Container(
               decoration: BoxDecoration(
                 boxShadow: [
@@ -793,14 +797,13 @@ class _TicketPageState extends State<TicketPage> {
                     color: Colors.black.withOpacity(0.05),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
-                  )
+                  ),
                 ],
               ),
               child: ClipPath(
                 clipper: TicketClipper(),
                 child: Column(
                   children: [
-                    // Top Blue Section
                     Container(
                       color: const Color(0XFF4A85F6),
                       padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
@@ -884,46 +887,62 @@ class _TicketPageState extends State<TicketPage> {
                       ),
                     ),
 
-                    // Middle White Section
                     Container(
                       color: Colors.white,
                       padding: const EdgeInsets.all(20),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Informasi Pesanan
-                          _buildSectionTitle(Icons.assignment, "Informasi Pesanan"),
+                          _buildSectionTitle(
+                            Icons.assignment,
+                            "Informasi Pesanan",
+                          ),
                           const SizedBox(height: 15),
-                          _buildInfoRow("Nama Kapal", booking.vesselName ?? "-"),
+                          _buildInfoRow(
+                            "Nama Kapal",
+                            booking.vesselName ?? "-",
+                          ),
                           const SizedBox(height: 10),
-                          _buildInfoRow("Alamat Dermaga", booking.dockLocation ?? "-"),
+                          _buildInfoRow(
+                            "Alamat Dermaga",
+                            booking.dockLocation ?? "-",
+                          ),
                           const SizedBox(height: 10),
                           _buildInfoRow("Estimasi Tiba", formattedEstDate),
-                          
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 15),
-                            child: Divider(color: Color(0XFFF0F0F0)),
-                          ),
-
-                          // Detail Produk
-                          _buildSectionTitle(Icons.inventory_2_outlined, "Detail Produk"),
-                          const SizedBox(height: 15),
-                          ...booking.items.map<Widget>((item) => _buildProductItem(item)).toList(),
 
                           const Padding(
                             padding: EdgeInsets.symmetric(vertical: 15),
                             child: Divider(color: Color(0XFFF0F0F0)),
                           ),
 
-                          // Ringkasan Pembayaran
-                          _buildSectionTitle(Icons.receipt_long, "Ringkasan Pembayaran"),
+                          _buildSectionTitle(
+                            Icons.inventory_2_outlined,
+                            "Detail Produk",
+                          ),
                           const SizedBox(height: 15),
-                          _buildPaymentRow("Total Pembayaran", formattedPrice, isTotal: true),
+                          ...booking.items
+                              .map<Widget>((item) => _buildProductItem(item))
+                              .toList(),
+
+                          const Padding(
+                            padding: EdgeInsets.symmetric(vertical: 15),
+                            child: Divider(color: Color(0XFFF0F0F0)),
+                          ),
+
+                          _buildSectionTitle(
+                            Icons.receipt_long,
+                            "Ringkasan Pembayaran",
+                          ),
+                          const SizedBox(height: 15),
+                          _buildPaymentRow(
+                            "Total Pembayaran",
+                            formattedPrice,
+                            isTotal: true,
+                          ),
                         ],
                       ),
                     ),
 
-                    // Dashed Line Section
                     Container(
                       color: Colors.white,
                       child: Row(
@@ -941,7 +960,6 @@ class _TicketPageState extends State<TicketPage> {
                       ),
                     ),
 
-                    // Bottom Barcode Section
                     Container(
                       color: Colors.white,
                       padding: const EdgeInsets.all(20),
@@ -963,12 +981,18 @@ class _TicketPageState extends State<TicketPage> {
                               height: 80,
                               fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) =>
-                                  const Icon(Icons.qr_code_scanner,
-                                      size: 80, color: Colors.grey),
+                                  const Icon(
+                                    Icons.qr_code_scanner,
+                                    size: 80,
+                                    color: Colors.grey,
+                                  ),
                             )
                           else
-                            const Icon(Icons.qr_code_scanner,
-                                size: 80, color: Colors.grey),
+                            const Icon(
+                              Icons.qr_code_scanner,
+                              size: 80,
+                              color: Colors.grey,
+                            ),
                           const SizedBox(height: 10),
                           Text(
                             booking.bookingNumber.replaceAll('-', ''),
@@ -989,7 +1013,6 @@ class _TicketPageState extends State<TicketPage> {
 
             const SizedBox(height: 20),
 
-            // Info Box
             Container(
               padding: const EdgeInsets.all(15),
               decoration: BoxDecoration(
@@ -999,15 +1022,16 @@ class _TicketPageState extends State<TicketPage> {
               ),
               child: Row(
                 children: [
-                  const Icon(Icons.info_outline, color: Color(0XFF4A85F6), size: 20),
+                  const Icon(
+                    Icons.info_outline,
+                    color: Color(0XFF4A85F6),
+                    size: 20,
+                  ),
                   const SizedBox(width: 10),
                   Expanded(
                     child: const Text(
                       "Simpan tiket ini atau tunjukkan ke petugas untuk memudahkan proses pengambilan.",
-                      style: TextStyle(
-                        color: Color(0XFF4A85F6),
-                        fontSize: 11,
-                      ),
+                      style: TextStyle(color: Color(0XFF4A85F6), fontSize: 11),
                     ),
                   ),
                 ],
@@ -1016,7 +1040,6 @@ class _TicketPageState extends State<TicketPage> {
 
             const SizedBox(height: 20),
 
-            // Tombol Upload Bukti (hanya saat on_delivery)
             if (booking.status == 'on_delivery')
               SizedBox(
                 width: double.infinity,
@@ -1029,10 +1052,17 @@ class _TicketPageState extends State<TicketPage> {
                     ),
                     elevation: 4,
                   ),
-                  icon: const Icon(Icons.cloud_upload_outlined, color: Colors.white),
+                  icon: const Icon(
+                    Icons.cloud_upload_outlined,
+                    color: Colors.white,
+                  ),
                   label: const Text(
                     'Upload Bukti Pengiriman',
-                    style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.bold),
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 15,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   onPressed: () async {
                     final refreshed = await Navigator.push<bool>(
@@ -1051,64 +1081,75 @@ class _TicketPageState extends State<TicketPage> {
                 ),
               ),
 
-            // Info menunggu verifikasi (saat pending_completion)
-            if (booking.status == 'pending_completion') ...
-              [
-                Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: const Color(0xFFFFF8E1),
-                    borderRadius: BorderRadius.circular(14),
-                    border: Border.all(color: const Color(0xFFFFE082)),
-                  ),
-                  child: const Row(
-                    children: [
-                      Icon(Icons.hourglass_top, color: Color(0xFFF59E0B), size: 22),
-                      SizedBox(width: 12),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Menunggu Verifikasi Admin',
-                              style: TextStyle(fontWeight: FontWeight.bold, color: Color(0xFF92400E), fontSize: 13),
-                            ),
-                            SizedBox(height: 4),
-                            Text(
-                              'Bukti pengiriman sudah dikirim. Admin sedang memverifikasi pesanan Anda.',
-                              style: TextStyle(color: Color(0xFF92400E), fontSize: 11),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
+            if (booking.status == 'pending_completion') ...[
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: const Color(0xFFFFF8E1),
+                  borderRadius: BorderRadius.circular(14),
+                  border: Border.all(color: const Color(0xFFFFE082)),
                 ),
-                const SizedBox(height: 12),
-                // Tampilkan foto bukti jika ada
-                if (booking.proofOfDeliveryUrl != null) ...
-                  [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: const Text(
-                        'Bukti Pengiriman Diunggah:',
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
-                      ),
+                child: const Row(
+                  children: [
+                    Icon(
+                      Icons.hourglass_top,
+                      color: Color(0xFFF59E0B),
+                      size: 22,
                     ),
-                    const SizedBox(height: 8),
-                    ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        booking.proofOfDeliveryUrl!,
-                        width: double.infinity,
-                        height: 200,
-                        fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => const Icon(Icons.broken_image, size: 60, color: Colors.grey),
+                    SizedBox(width: 12),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Menunggu Verifikasi Admin',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF92400E),
+                              fontSize: 13,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Bukti pengiriman sudah dikirim. Admin sedang memverifikasi pesanan Anda.',
+                            style: TextStyle(
+                              color: Color(0xFF92400E),
+                              fontSize: 11,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ],
+                ),
+              ),
+              const SizedBox(height: 12),
+              if (booking.proofOfDeliveryUrl != null) ...[
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: const Text(
+                    'Bukti Pengiriman Diunggah:',
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 13),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                ClipRRect(
+                  borderRadius: BorderRadius.circular(12),
+                  child: Image.network(
+                    booking.proofOfDeliveryUrl!,
+                    width: double.infinity,
+                    height: 200,
+                    fit: BoxFit.cover,
+                    errorBuilder: (_, __, ___) => const Icon(
+                      Icons.broken_image,
+                      size: 60,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
               ],
+            ],
 
             const SizedBox(height: 20),
           ],
@@ -1133,7 +1174,6 @@ class _TicketPageState extends State<TicketPage> {
       ],
     );
   }
-
 
   Widget _buildInfoRow(String label, String value) {
     return Row(
@@ -1161,9 +1201,11 @@ class _TicketPageState extends State<TicketPage> {
   }
 
   Widget _buildProductItem(dynamic item) {
-    // Format price
-    final formatter =
-        NumberFormat.currency(locale: 'id_ID', symbol: 'Rp ', decimalDigits: 0);
+    final formatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
     String formattedItemPrice = formatter.format(item.price);
 
     return Padding(
@@ -1257,21 +1299,17 @@ class TicketClipper extends CustomClipper<Path> {
     const double radius = 6.0;
     const double notchRadius = 15.0;
 
-    // Top edge with scallops
     path.lineTo(0, 0);
-    
-    // Calculate how many scallops fit
+
     int count = (size.width / (radius * 2)).floor();
     double spacing = (size.width - (count * radius * 2)) / count;
-    
-    // Draw top scallops
+
     path.moveTo(0, 0);
     double currentX = 0;
-    
+
     for (int i = 0; i < count; i++) {
       currentX += radius;
-      
-      // If it's the middle scallop, make it bigger
+
       if (i == count ~/ 2) {
         path.arcToPoint(
           Offset(currentX + notchRadius * 2, 0),
@@ -1287,16 +1325,15 @@ class TicketClipper extends CustomClipper<Path> {
         );
         currentX += radius;
       }
-      
+
       if (i < count - 1) {
         path.lineTo(currentX + spacing, 0);
         currentX += spacing;
       }
     }
-    
+
     path.lineTo(size.width, 0);
 
-    // Right edge
     path.lineTo(size.width, size.height * 0.65 - notchRadius);
     path.arcToPoint(
       Offset(size.width, size.height * 0.65 + notchRadius),
@@ -1305,7 +1342,6 @@ class TicketClipper extends CustomClipper<Path> {
     );
     path.lineTo(size.width, size.height);
 
-    // Bottom edge with scallops
     currentX = size.width;
     for (int i = 0; i < count; i++) {
       currentX -= radius;
@@ -1315,16 +1351,15 @@ class TicketClipper extends CustomClipper<Path> {
         clockwise: false,
       );
       currentX -= radius;
-      
+
       if (i < count - 1) {
         path.lineTo(currentX - spacing, size.height);
         currentX -= spacing;
       }
     }
-    
+
     path.lineTo(0, size.height);
 
-    // Left edge
     path.lineTo(0, size.height * 0.65 + notchRadius);
     path.arcToPoint(
       Offset(0, size.height * 0.65 - notchRadius),
