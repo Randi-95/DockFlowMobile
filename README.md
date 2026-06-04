@@ -1,57 +1,49 @@
+# Aplikasi Mobile DockFlow
 
-# 📱 DockFlow Mobile App
+DockFlow Mobile adalah aplikasi mobile cross-platform yang dibangun dengan Flutter. Aplikasi ini dirancang untuk memudahkan kru dan sopir mengelola pesanan mereka secara langsung dari lapangan, menjalankan tugas operasional, serta mengunggah Bukti Pengiriman (Proof of Delivery / POD).
 
-**DockFlow (Maritime Logistics Management System)**
-Sebuah sistem manajemen terpadu yang dirancang untuk mengontrol lalu lintas logistik pelabuhan. Dibangun menggunakan arsitektur *multi-platform* (Web Panel, WinForms Desktop, dan Flutter Mobile App). Fitur utama mencakup pelacakan inventaris *real-time*, validasi perangkat keras (*Barcode/QR Scanner*) untuk *Chain of Custody* yang aman, serta sistem absensi kru lapangan berbasis *anti-duplication logic*.
-
-DockFlow Mobile adalah aplikasi *cross-platform* yang dibangun menggunakan Flutter sebagai bagian dari ekosistem DockFlow. Aplikasi ini dirancang khusus untuk kru lapangan di dermaga agar dapat melakukan absensi operasional, memesan suplai logistik kapal secara instan, serta memfasilitasi serah terima barang secara digital tanpa kertas.
-
-## 🚀 Fitur Utama
+## 🚀 Fitur
 
 - **Pemesanan Logistik (Smart Order)**: Kru dapat menelusuri katalog barang, menambahkan ke keranjang, dan melakukan *checkout* pesanan dengan menentukan nama kapal dan lokasi sandar (dermaga) secara spesifik.
-- **Sistem Absensi Cerdas**: Pencatatan kehadiran (*Check-In* & *Check-Out*) secara *real-time* yang dilengkapi dengan logika anti-duplikasi untuk mencegah manipulasi data.
-- **Serah Terima Digital (QR Handover)**: Menampilkan QR Code resi pesanan yang siap dipindai oleh sistem kamera Gudang (Desktop) untuk memvalidasi *Chain of Custody* (perpindahan tanggung jawab) secara aman dan instan.
-- **Upload Bukti Pengiriman (POD)**: Integrasi kamera untuk mengambil dan mengunggah foto Bukti Pengiriman (Proof of Delivery) ketika pesanan telah diserahkan ke kapal.
-- **Push Notification**: Pembaruan status pesanan secara *real-time* dari pusat (Admin) ke perangkat kru menggunakan Firebase Cloud Messaging.
+- **Tinjauan & Manajemen Pemesanan**: Pengguna dapat melihat pemesanan yang ditugaskan, riwayat pesanan yang mendetail, serta memperbarui progres tugas.
+- **Serah Terima Digital (QR Handover)**: Menampilkan QR Code resi pesanan yang siap dipindai oleh sistem kamera Gudang (Web) untuk memvalidasi *Chain of Custody* (perpindahan tanggung jawab) secara aman dan instan.
+- **Upload Bukti Pengiriman (POD)**: Integrasi langsung untuk mengambil dan mengunggah bukti foto pengiriman ketika pesanan mencapai status "on_delivery".
+- **Push Notification**: Pembaruan dan peringatan real-time yang didukung oleh Firebase Cloud Messaging.
+- **State Management yang Aman**: Penanganan state aplikasi yang robust menggunakan arsitektur BLoC (`flutter_bloc`).
 
 ## 🛠 Teknologi yang Digunakan
 
 - **Framework**: [Flutter](https://flutter.dev) (SDK ^3.11.4)
 - **Bahasa Pemrograman**: Dart
-- **Arsitektur & State Management**: BLoC Pattern (`flutter_bloc`) untuk penanganan *state* yang *robust* dan *scalable* pada level *enterprise*.
-- **Networking API**: `dio` (terintegrasi dengan Data Transfer Objects / DTO)
+- **State Management**: `flutter_bloc`
+- **Networking**: `dio`
 - **Layanan Backend**: Firebase Core & Firebase Messaging
-- **Penyimpanan Lokal**: `shared_preferences` & `flutter_secure_storage` untuk manajemen token sesi.
-- **Komponen UI/UX**: Pendekatan *Material Design 3* dengan elemen desain modern.
-- **Media & Hardware**: `image_picker` (untuk foto POD) dan *QR Generator* untuk *handover*.
+- **Penyimpanan Lokal**: `shared_preferences` & `flutter_secure_storage`
+- **Komponen UI**: `cupertino_icons`, `art_sweetalert`
+- **Media**: `image_picker`
 
 ## ⚙️ Instalasi & Persiapan
 
 1. **Prasyarat:**
-   Pastikan Anda telah [menginstal Flutter](https://docs.flutter.dev/get-started/install) dan menyiapkan emulator (atau menghubungkan *smartphone* asli via *debugging*).
+   Pastikan Anda telah [menginstal Flutter](https://docs.flutter.dev/get-started/install) dan menjalankan emulator (atau memiliki perangkat asli yang terhubung).
 
-2. **Clone Repositori:**
-```bash
+2. **Clone repositori:**
+   ```bash
    git clone <url-repositori>
-   cd dockflow_mobile
-```
+   cd dockflow_app
+   ```
 
 3. **Instal Dependensi:**
-
-```bash
+   ```bash
    flutter pub get
-```
+   ```
 
-4. **Konfigurasi API (Opsional):**
-Pastikan Anda telah mengatur `BASE_URL` yang mengarah ke API Backend (Filament/Laravel) pada *file* konfigurasi *environment* Anda.
-5. **Jalankan Aplikasi:**
-
-```bash
+4. **Jalankan Aplikasi:**
+   ```bash
    flutter run
-```
+   ```
 
 ## 📂 Struktur Proyek
 
-* `lib/features/`: Berisi modul fitur inti aplikasi (misalnya `Auth`, `Attendance`, `Booking`, `Handover`) yang dipisahkan berdasarkan pola arsitektur BLoC (terdiri dari lapisan *Presentation*, *Domain*, dan *Data*).
-* `lib/core/`: Berisi konfigurasi dasar, utilitas, *theme*, dan *network client* (`dio` *interceptors*).
-* `lib/assets/`: Menyimpan gambar, ikon, dan aset statis lainnya.
+- `lib/features/`: Berisi modul fitur inti aplikasi (misalnya Home, Booking, Auth) yang menggunakan arsitektur BLoC.
+- `lib/assets/`: Menyimpan gambar dan aset statis lainnya (logo, placeholder, dll).
