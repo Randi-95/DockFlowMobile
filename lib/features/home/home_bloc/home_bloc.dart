@@ -21,7 +21,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
       final cachedString = prefs.getString(cacheKey);
       bool hasCache = false;
 
-      // 1. Cek cache lokal
       if (cachedString != null) {
         try {
           final cachedData = jsonDecode(cachedString);
@@ -29,7 +28,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           final stockData = cachedData['stock'];
           final attendanceData = cachedData['attendance'];
 
-          // 2. Emit cache secara instan
           emit(
             HomeLoaded(
               user: User.fromJson(
@@ -42,16 +40,13 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           );
           hasCache = true;
         } catch (e) {
-          // Abaikan jika gagal parse
         }
       }
 
-      // 3. Tampilkan loading jika tidak ada cache
       if (!hasCache) {
         emit(HomeLoading());
       }
 
-      // 4. Selalu load data terbaru di background
       try {
         final results = await Future.wait([
           apiClient.dio.get('/profile'),
@@ -63,7 +58,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         final ressStock = results[1];
         final ressAttendance = results[2];
 
-        // 5. Simpan respons ke cache
         final cacheDataToSave = {
           'profile': ressProfile.data,
           'stock': ressStock.data,
@@ -71,7 +65,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
         };
         await prefs.setString(cacheKey, jsonEncode(cacheDataToSave));
 
-        // 6. Update UI
         emit(
           HomeLoaded(
             user: User.fromJson(

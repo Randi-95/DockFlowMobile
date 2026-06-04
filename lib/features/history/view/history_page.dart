@@ -978,7 +978,7 @@ class _TicketPageState extends State<TicketPage> {
                               booking.barcodeUrl!.isNotEmpty)
                             Image.network(
                               booking.barcodeUrl!,
-                              height: 80,
+                              height: 300,
                               fit: BoxFit.contain,
                               errorBuilder: (context, error, stackTrace) =>
                                   const Icon(

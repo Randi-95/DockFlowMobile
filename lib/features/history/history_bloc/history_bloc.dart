@@ -30,10 +30,8 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
         queryParams['date'] = event.date;
       }
 
-      // 1. Buat key cache unik berdasarkan parameter (agar hasil filter juga tersimpan)
       final cacheKey = 'history_data_${queryParams.toString()}';
 
-      // 2. Cek apakah ada data di cache lokal
       final cachedString = prefs.getString(cacheKey);
       bool hasCache = false;
 
@@ -45,7 +43,6 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
               .map((booking) => BookingModel.fromJson(booking))
               .toList();
 
-          // 3. Tampilkan data dari cache secara langsung (tanpa loading)
           emit(HistoryLoaded(
             summary: summary,
             bookings: bookings,
@@ -55,16 +52,13 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
           ));
           hasCache = true;
         } catch (e) {
-          // Jika gagal parsing cache, abaikan dan lanjut ambil dari API
         }
       }
 
-      // 4. Emit Loading HANYA jika belum ada data di cache sama sekali (pertama kali buka)
       if (!hasCache) {
         emit(HistoryLoading());
       }
 
-      // 5. Selalu ambil data terbaru dari API di background (Cache-Then-Network)
       try {
         final response = await apiClient.dio.get(
           '/booking-history',
@@ -74,7 +68,6 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
         if (response.data['status'] == true) {
           final data = response.data['data'];
 
-          // 6. Simpan respons sukses ke cache untuk penggunaan offline berikutnya
           await prefs.setString(cacheKey, jsonEncode(data));
 
           final summary = BookingSummary.fromJson(data['summary']);
@@ -83,7 +76,6 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
               .map((booking) => BookingModel.fromJson(booking))
               .toList();
 
-          // 7. Update tampilan dengan data terbaru dari API
           emit(HistoryLoaded(
             summary: summary,
             bookings: bookings,
@@ -92,14 +84,11 @@ class HistoryBloc extends Bloc<HistoryEvent, HistoryState> {
             selectedDate: event.date,
           ));
         } else {
-          // Hanya tampilkan error jika tidak ada cache
           if (!hasCache) {
             emit(HistoryError(message: "Gagal memuat data riwayat"));
           }
         }
       } on DioException catch (e) {
-        // Jika sedang offline/koneksi gagal TAPI sudah ada cache, 
-        // kita tidak perlu melakukan apa-apa karena state HistoryLoaded (dengan cache) sudah aktif.
         if (!hasCache) {
           String errorMsg = "Terjadi kesalahan koneksi";
 

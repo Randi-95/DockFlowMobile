@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:dockflow_app/core/network/api_client.dart';
 import 'package:dockflow_app/features/notifications/models/notification_model.dart';
 

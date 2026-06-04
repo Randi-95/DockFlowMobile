@@ -34,7 +34,6 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         emit(ProfileLoaded(profile: profile, stats: stats));
         hasCache = true;
       } catch (e) {
-        // Abaikan error parse cache, lanjut ambil dari API
         debugPrint('[ProfileBloc] Cache parse error: $e');
       }
     }

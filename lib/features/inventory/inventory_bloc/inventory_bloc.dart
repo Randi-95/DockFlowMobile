@@ -32,7 +32,6 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
       final cachedString = prefs.getString(cacheKey);
       bool hasCache = false;
 
-      // 1. Cek cache
       if (cachedString != null) {
         try {
           final cachedData = jsonDecode(cachedString);
@@ -46,7 +45,6 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
               .map((prod) => ProductModel.fromJson(prod))
               .toList();
 
-          // 2. Emit cache secara instan
           emit(InventoryLoaded(
             statistics: statistics,
             categories: categories,
@@ -56,16 +54,13 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
           ));
           hasCache = true;
         } catch (e) {
-          // Abaikan jika error saat parse
         }
       }
 
-      // 3. Tampilkan loading bila cache kosong
       if (!hasCache) {
         emit(InventoryLoading());
       }
 
-      // 4. Selalu fetch terbaru dari API
       try {
         final response = await apiClient.dio.get(
           '/inventory-data',
@@ -75,7 +70,6 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
         if (response.data['status'] == true) {
           final data = response.data['data'];
 
-          // 5. Simpan ke cache
           await prefs.setString(cacheKey, jsonEncode(data));
 
           final statistics = InventoryStatistics.fromJson(data['statistics']);
@@ -88,7 +82,6 @@ class InventoryBloc extends Bloc<InventoryEvent, InventoryState> {
               .map((prod) => ProductModel.fromJson(prod))
               .toList();
 
-          // 6. Update UI
           emit(InventoryLoaded(
             statistics: statistics,
             categories: categories,
